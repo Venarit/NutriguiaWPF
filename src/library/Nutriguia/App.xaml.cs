@@ -13,5 +13,6 @@ namespace Nutriguia
     /// </summary>
     public partial class App : Application
     {
+
     }
 }
