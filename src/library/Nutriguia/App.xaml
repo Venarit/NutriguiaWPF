@@ -4,16 +4,22 @@
              xmlns:local="clr-namespace:Nutriguia"
              StartupUri="MainWindow.xaml"
              ShutdownMode="OnExplicitShutdown"
+             xmlns:helpers="clr-namespace:Nutriguia.Helpers"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:syntax="http://schemas.lepo.co/wpfui/2022/xaml/syntax"
              >
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ui:ThemesDictionary Theme="Light" />
+                <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
 
             </ResourceDictionary.MergedDictionaries>
+
+            <helpers:ThemeToIndexConverter x:Key="ThemeToIndexConverter" />
+            
         </ResourceDictionary>
     </Application.Resources>
+    
 </Application>
