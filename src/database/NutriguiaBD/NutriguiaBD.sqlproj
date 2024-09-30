@@ -65,6 +65,7 @@
     <Folder Include="User" />
     <Folder Include="User\Tablas" />
     <Folder Include="User\StoredProcedures" />
+    <Folder Include="Paciente" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Alimento\Tablas\Alimento.sql" />
@@ -77,5 +78,7 @@
     <Build Include="Common\Tablas\Macronutrientes.sql" />
     <Build Include="Common\Tablas\Objetivo.sql" />
     <Build Include="User\Tablas\User.sql" />
+    <Build Include="Paciente\Paciente.sql" />
+    <Build Include="Paciente\PerfilNutricional.sql" />
   </ItemGroup>
 </Project>
