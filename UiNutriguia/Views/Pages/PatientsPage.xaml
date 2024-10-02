@@ -33,7 +33,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <ui:Button Grid.Column="0" Command="{Binding ViewModel.AddPatientCommand}" CommandParameter="{x:Type local:PatientsAddPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5">
+                <ui:Button Grid.Column="0" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5">
                     <ui:SymbolIcon Symbol="PersonAdd16" />
                 </ui:Button>
                 <ui:AutoSuggestBox PlaceholderText="Buscar Paciente..." Margin="0,5" Grid.Column="1">

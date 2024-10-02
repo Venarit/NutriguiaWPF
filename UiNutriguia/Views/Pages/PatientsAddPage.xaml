@@ -17,6 +17,73 @@
       Title="PatientsAddPage">
 
     <Grid>
-        <ui:TextBox> Hola </ui:TextBox>
+        <!--<ui:Snackbar Title="Title" Appearance="Secondary"/>-->
+        <TextBlock Text="Añadir usuario" FontSize="25" Margin="10,0"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.4*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Column="0" MinWidth="500px" Margin="0,50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Margin="10,5">
+                    <Label Content="Nombre"/>
+                    <ui:TextBox x:Name="tbName"/>
+                </StackPanel>
+
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="0" Margin="10,5">
+                    <Label Content="Segundo Nombre"/>
+                    <ui:TextBox x:Name="tbSecondName"/>
+                </StackPanel>
+
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" Margin="10,5">
+                    <Label Content="Apellido Paterno"/>
+                    <ui:TextBox x:Name="tbLastNameP"/>
+                </StackPanel>
+
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="1" Margin="10,5">
+                    <Label Content="Apelido Materno"/>
+                    <ui:TextBox x:Name="tbLastNameM"/>
+                </StackPanel>
+
+                <StackPanel Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="2" Margin="10,5">
+                    <Label Content="Correo electrónico"/>
+                    <ui:TextBox x:Name="tbEmail"/>
+                </StackPanel>
+
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" Margin="10,5">
+                    <Label Content="Teléfono Celular"/>
+                    <ui:TextBox x:Name="tbCellphone"/>
+                </StackPanel>
+                
+                <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="3" Margin="10,5">
+                    <Label Content="Fecha de Nacimiento"/>
+                    <DatePicker x:Name="tbBirthDate"/>
+                </StackPanel>
+
+                <ui:Button Content="Guardar" Grid.ColumnSpan="4" Grid.Row="4" Margin="10,20,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="SavePatient"/>
+
+            </Grid>
+
+            <StackPanel Grid.Column="1" Margin="50,100,50,0" HorizontalAlignment="Center">
+                <Image Source="/Resources/Images/human.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </StackPanel>
+
+        </Grid>
     </Grid>
 </Page>

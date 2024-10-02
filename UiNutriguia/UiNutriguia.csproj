@@ -24,15 +24,17 @@
   <ItemGroup>
     <None Remove="Assets\wpfui-icon-256.png" />
     <None Remove="Assets\wpfui-icon-1024.png" />
-    <None Remove="Resources\Images\doctor.png" />
     <None Remove="Resources\Images\nutriguia.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\wpfui-icon-256.png" />
     <Resource Include="Assets\wpfui-icon-1024.png" />
-    <Resource Include="Resources\Images\doctor.png" />
     <Resource Include="Resources\Images\nutriguia.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Dialogs\" />
   </ItemGroup>
 
 </Project>

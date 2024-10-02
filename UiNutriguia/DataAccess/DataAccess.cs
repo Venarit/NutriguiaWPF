@@ -12,6 +12,7 @@ namespace Nutriguia.Model.DataAccess
     {
         #region Stored Procedures
         private const string SpGetPatients = "[Paciente].[GetPacientes]";
+        private const string SpSetPatients = "[Paciente].[SetPacientes]";
         #endregion
 
         private SqlConnection connection;
@@ -43,6 +44,9 @@ namespace Nutriguia.Model.DataAccess
 
             try
             {
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+
                 using (SqlCommand cmd = new SqlCommand(SpGetPatients, connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -62,7 +66,8 @@ namespace Nutriguia.Model.DataAccess
                                 LastNameP = reader.GetString(reader.GetOrdinal("Apellido_P")),
                                 LastNameM = reader.IsDBNull(lastNameMIndex) ? null : reader.GetString(lastNameMIndex),
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                Cellphone = reader.GetString(reader.GetOrdinal("Celular"))
+                                Cellphone = reader.GetString(reader.GetOrdinal("Celular")),
+                                BirthDate = reader.GetString(reader.GetOrdinal("FechaNacimiento"))
                             };
 
                             patients.Add(patient);
@@ -83,6 +88,41 @@ namespace Nutriguia.Model.DataAccess
             }
 
             return patients;
+        }
+
+        public void SetPatients(PatientModel patient)
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+
+                using (SqlCommand cmd = new SqlCommand(SpSetPatients, connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add(new SqlParameter("@Nombre", patient.Name));
+                    cmd.Parameters.Add(new SqlParameter("@SegundoNombre", patient.SecondName));
+                    cmd.Parameters.Add(new SqlParameter("@ApellidoP", patient.LastNameP));
+                    cmd.Parameters.Add(new SqlParameter("@ApellidoM", patient.LastNameM));
+                    cmd.Parameters.Add(new SqlParameter("@Email", patient.Email));
+                    cmd.Parameters.Add(new SqlParameter("@Celular", patient.Cellphone));
+                    cmd.Parameters.Add(new SqlParameter("@FechaNacimiento", patient.BirthDate));
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error saving patients: " + ex.Message);
+            }
+            finally
+            {
+                if (connection != null && connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 

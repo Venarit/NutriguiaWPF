@@ -84,5 +84,6 @@
     <Build Include="Paciente\Tablas\Paciente.sql" />
     <Build Include="Paciente\Tablas\PerfilNutricional.sql" />
     <Build Include="Paciente\Stored Procedures\GetPacientes.sql" />
+    <Build Include="Paciente\Stored Procedures\SetPacientes.sql" />
   </ItemGroup>
 </Project>

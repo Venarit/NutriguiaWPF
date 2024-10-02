@@ -55,6 +55,7 @@ namespace UiNutriguia
 
                 services.AddSingleton<PatientsPage>();
                 services.AddSingleton<PatientsViewModel>();
+                services.AddSingleton<PatientsAddPage>();
             }).Build();
 
         /// <summary>
