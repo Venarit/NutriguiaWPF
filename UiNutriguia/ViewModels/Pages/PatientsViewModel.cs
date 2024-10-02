@@ -29,13 +29,13 @@ namespace UiNutriguia.ViewModels.Pages
             // if result=error message: _snackbarAppearance = ControlAppearance.Danger
             // if result=success message: _snackbarAppearance = ControlAppearance.Success
 
-            snackbarService.Show(
-                "Guardar paciente a base de datos:",
-                "Error/Success Message: " + message,
-                _snackbarAppearance,
-                new SymbolIcon(SymbolRegular.Fluent24),
-                TimeSpan.FromSeconds(5)
-            );
+            //snackbarService.Show(
+            //    "Guardar paciente a base de datos:",
+            //    "Error/Success Message: " + message,
+            //    _snackbarAppearance,
+            //    new SymbolIcon(SymbolRegular.Fluent24),
+            //    TimeSpan.FromSeconds(5)
+            //);
         }
 
         public void AddPatient(PatientModel patient)
@@ -56,7 +56,10 @@ namespace UiNutriguia.ViewModels.Pages
                 InitializeViewModel();
         }
 
-        public void OnNavigatedFrom() { }
+        public void OnNavigatedFrom() 
+        {
+            _isInitialized = false;
+        }
 
         public void InitializeViewModel()
         {

@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="0.4*"/>
             </Grid.ColumnDefinitions>
             
-            <Grid Grid.Column="0" MinWidth="500px" Margin="0,50">
+            <Grid x:Name="GridPatient" Grid.Column="0" MinWidth="500px" Margin="0,50">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -42,38 +42,38 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Margin="10,5">
-                    <Label Content="Nombre"/>
-                    <ui:TextBox x:Name="tbName"/>
+                    <Label Content="Nombre" />
+                    <ui:TextBox x:Name="tbName" MaxLength="50" TextChanged="tb_TextChanged"/>
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="0" Margin="10,5">
                     <Label Content="Segundo Nombre"/>
-                    <ui:TextBox x:Name="tbSecondName"/>
+                    <ui:TextBox x:Name="tbSecondName" MaxLength="50" />
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" Margin="10,5">
                     <Label Content="Apellido Paterno"/>
-                    <ui:TextBox x:Name="tbLastNameP"/>
+                    <ui:TextBox x:Name="tbLastNameP" MaxLength="50" TextChanged="tb_TextChanged"/>
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="1" Margin="10,5">
                     <Label Content="Apelido Materno"/>
-                    <ui:TextBox x:Name="tbLastNameM"/>
+                    <ui:TextBox x:Name="tbLastNameM" MaxLength="50" />
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="2" Margin="10,5">
                     <Label Content="Correo electrónico"/>
-                    <ui:TextBox x:Name="tbEmail"/>
+                    <ui:TextBox x:Name="tbEmail" MaxLength="100" TextChanged="tbEmail_TextChanged"/>
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" Margin="10,5">
                     <Label Content="Teléfono Celular"/>
-                    <ui:TextBox x:Name="tbCellphone"/>
+                    <ui:NumberBox x:Name="tbCellphone" MaxLength="10" TextChanged="nB_TextChanged" />
                 </StackPanel>
                 
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="3" Margin="10,5">
                     <Label Content="Fecha de Nacimiento"/>
-                    <DatePicker x:Name="tbBirthDate"/>
+                    <DatePicker x:Name="tbBirthDate" SelectedDateChanged="dp_DateChanged"/>
                 </StackPanel>
 
                 <ui:Button Content="Guardar" Grid.ColumnSpan="4" Grid.Row="4" Margin="10,20,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="SavePatient"/>
@@ -81,7 +81,8 @@
             </Grid>
 
             <StackPanel Grid.Column="1" Margin="50,100,50,0" HorizontalAlignment="Center">
-                <Image Source="/Resources/Images/human.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <!--<Image Source="/Resources/Images/human.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
+                <ui:SymbolIcon Symbol="PersonAdd16" FontSize="100"/>
             </StackPanel>
 
         </Grid>
