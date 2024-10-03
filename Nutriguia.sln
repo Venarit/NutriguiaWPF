@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutriguia.Model", "src\libr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutriguia.ViewModel", "src\library\Nutriguia.ViewModel\Nutriguia.ViewModel.csproj", "{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiNutriguia", "UiNutriguia\UiNutriguia.csproj", "{B16A7F3D-DD7E-4CC4-A939-B91D2C568D07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UiNutriguia", "src\library\UiNutriguia\UiNutriguia.csproj", "{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,10 @@ Global
 		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B16A7F3D-DD7E-4CC4-A939-B91D2C568D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B16A7F3D-DD7E-4CC4-A939-B91D2C568D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B16A7F3D-DD7E-4CC4-A939-B91D2C568D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B16A7F3D-DD7E-4CC4-A939-B91D2C568D07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
