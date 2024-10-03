@@ -58,32 +58,33 @@
     <Folder Include="Properties" />
     <Folder Include="Alimento" />
     <Folder Include="Alimento\Tablas" />
-    <Folder Include="Common" />
-    <Folder Include="Common\Tablas" />
+    <Folder Include="Catalogo" />
+    <Folder Include="Catalogo\Tablas" />
     <Folder Include="Alimento\Stored Procedures" />
-    <Folder Include="Common\Stored Procedures" />
-    <Folder Include="User" />
-    <Folder Include="User\Tablas" />
-    <Folder Include="User\StoredProcedures" />
+    <Folder Include="Catalogo\Stored Procedures" />
+    <Folder Include="Seguridad" />
+    <Folder Include="Seguridad\Tablas" />
+    <Folder Include="Seguridad\StoredProcedures" />
     <Folder Include="Paciente" />
     <Folder Include="Paciente\Tablas" />
     <Folder Include="Paciente\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Alimento\Tablas\Alimento.sql" />
-    <Build Include="Common.sql" />
+    <Build Include="Catalogo.sql" />
     <Build Include="Alimento.sql" />
-    <Build Include="User.sql" />
+    <Build Include="Seguridad.sql" />
     <Build Include="Alimento\Tablas\TipoAlimento.sql" />
     <Build Include="Alimento\Tablas\Unidad.sql" />
-    <Build Include="Common\Tablas\Actividad.sql" />
-    <Build Include="Common\Tablas\Macronutrientes.sql" />
-    <Build Include="Common\Tablas\Objetivo.sql" />
-    <Build Include="User\Tablas\User.sql" />
+    <Build Include="Catalogo\Tablas\Actividad.sql" />
+    <Build Include="Catalogo\Tablas\Macronutrientes.sql" />
+    <Build Include="Catalogo\Tablas\Objetivo.sql" />
+    <Build Include="Seguridad\Tablas\User.sql" />
     <Build Include="Paciente.sql" />
     <Build Include="Paciente\Tablas\Paciente.sql" />
     <Build Include="Paciente\Tablas\PerfilNutricional.sql" />
     <Build Include="Paciente\Stored Procedures\GetPacientes.sql" />
     <Build Include="Paciente\Stored Procedures\SetPacientes.sql" />
+    <Build Include="Paciente\Tablas\PacienteMedicion.sql" />
   </ItemGroup>
 </Project>

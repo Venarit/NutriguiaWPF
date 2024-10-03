@@ -1,4 +1,4 @@
-﻿CREATE TABLE [Common].[Macronutrientes]
+﻿CREATE TABLE [Catalogo].[Macronutrientes]
 (
 	[idMacronutrientes] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[Codigo] NVARCHAR(50) NOT NULL,

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [Common].[Objetivo]
+﻿CREATE TABLE [Catalogo].[Objetivo]
 (
 	[idObjetivo] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[Codigo] NVARCHAR(50) NOT NULL,
