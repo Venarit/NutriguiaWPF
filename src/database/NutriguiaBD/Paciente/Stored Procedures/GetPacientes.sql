@@ -9,6 +9,7 @@ BEGIN
 		Apellido_M,
 		Email,
 		Celular,
-		CAST(FechaNacimiento AS NVARCHAR) AS FechaNacimiento
+		CAST(FechaNacimiento AS NVARCHAR) AS FechaNacimiento,
+		Activo
 	FROM [Paciente].[Paciente]
 END

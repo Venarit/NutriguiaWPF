@@ -2,12 +2,13 @@
 {
     public class NutritionalProfileModel : BaseModel
     {
-        PatientModel Patient { get; set; }
-        public int IdUser { get; set; }
+        public int idPatient { get; set; }
+        //public int IdUser { get; set; }
         public int Height { get; set; }
-        public int Sex { get; set; }
-        ActivityModel Activity { get; set; }
-        ObjectiveModel Objective { get; set; }
-        MacronutrientModel Macronutrient { get; set; }
+        public required string Sex { get; set; }
+        public required ActivityModel Activity { get; set; }
+        public required ObjectiveModel Objective { get; set; }
+        public required MacronutrientModel Macronutrient { get; set; }
+        public PatientMeasurementModel? PatientMeasurement { get; set; }
     }
 }

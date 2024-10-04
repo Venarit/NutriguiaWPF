@@ -86,5 +86,10 @@
     <Build Include="Paciente\Stored Procedures\GetPacientes.sql" />
     <Build Include="Paciente\Stored Procedures\SetPacientes.sql" />
     <Build Include="Paciente\Tablas\PacienteMedicion.sql" />
+    <Build Include="Catalogo\Stored Procedures\GetObjetivo.sql" />
+    <Build Include="Catalogo\Stored Procedures\GetMacronutrientes.sql" />
+    <Build Include="Catalogo\Stored Procedures\GetActividad.sql" />
+    <Build Include="Paciente\Stored Procedures\GetPerfilesNutricionales.sql" />
+    <Build Include="Paciente\Stored Procedures\GetPacienteMediciones.sql" />
   </ItemGroup>
 </Project>

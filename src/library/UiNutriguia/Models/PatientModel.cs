@@ -9,5 +9,6 @@
         public required string Email { get; set; }
         public required string Cellphone { get; set; }
         public required string BirthDate { get; set; }
+        public NutritionalProfileModel? NutritionalProfileModel { get; set; }
     }
 }
