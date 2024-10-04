@@ -73,14 +73,28 @@ namespace UiNutriguia.Views.Pages
                 this.SelectedPatient = (PatientModel)listView.SelectedItem;
                 this.SelectedPatientName = String.Concat((this.SelectedPatient.Name + " "), this.SelectedPatient.SecondName != null? (this.SelectedPatient.SecondName + " ") : "", (this.selectedPatient.LastNameP + " "), this.selectedPatient.LastNameM);
                 
-                if (this.SelectedPatient.NutritionalProfileModel != null)
+                if (this.SelectedPatient.NutritionalProfile != null)
                 {   
-                    // TODO : IMPROVE
                     tb_nullNutritionalProfile.Visibility = Visibility.Collapsed;
-                    if (this.SelectedPatient.NutritionalProfileModel.PatientMeasurement != null)
+                    gd_NutritionalProfile.Visibility = Visibility.Visible;
+
+                    if (this.SelectedPatient.NutritionalProfile.PatientMeasurement != null)
                     {
+                        gd_PatientMeasurements.Visibility = Visibility.Visible;
                         tb_nullPatientMeasurement.Visibility = Visibility.Collapsed;
                     }
+                    else
+                    {
+                        gd_PatientMeasurements.Visibility = Visibility.Collapsed;
+                        tb_nullPatientMeasurement.Visibility = Visibility.Visible;
+                    }
+                }
+                else
+                {
+                    gd_NutritionalProfile.Visibility = Visibility.Collapsed;
+                    gd_PatientMeasurements.Visibility = Visibility.Collapsed;
+                    tb_nullNutritionalProfile.Visibility = Visibility.Visible;
+                    tb_nullPatientMeasurement.Visibility = Visibility.Visible;
                 }
 
             }

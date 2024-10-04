@@ -13,8 +13,8 @@ namespace Nutriguia.Model.DataAccess
         #region Stored Procedures
         private const string SpGetPatients = "[Paciente].[GetPacientes]";
         private const string SpSetPatients = "[Paciente].[SetPacientes]";
-        private const string spGetNutritionalProfiles = "[Paciente].[GetPerfilesNutricionales]";
-        private const string spGetPatientMeasurements = "[Paciente].[GetPacienteMediciones]";
+        private const string SpGetNutritionalProfiles = "[Paciente].[GetPerfilesNutricionales]";
+        private const string SpGetPatientMeasurements = "[Paciente].[GetPacienteMediciones]";
         private const string SpGetActivity = "[Catalogo].[GetActividad]";
         private const string SpGetMacronutrients = "[Catalogo].[GetMacronutrientes]";
         private const string SpGetObjectives = "[Catalogo].[GetObjetivo]";
@@ -77,7 +77,7 @@ namespace Nutriguia.Model.DataAccess
                                 Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
                             };
 
-                            patient.NutritionalProfileModel = nutritionalProfiles.FirstOrDefault(x => x.idPatient == patient.Id);
+                            patient.NutritionalProfile = nutritionalProfiles.FirstOrDefault(x => x.idPatient == patient.Id);
 
                             patients.Add(patient);
                         }
@@ -113,7 +113,7 @@ namespace Nutriguia.Model.DataAccess
                 if (connection.State == ConnectionState.Closed)
                     connection.Open();
 
-                using (SqlCommand cmd = new SqlCommand(spGetNutritionalProfiles, connection))
+                using (SqlCommand cmd = new SqlCommand(SpGetNutritionalProfiles, connection))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -160,21 +160,26 @@ namespace Nutriguia.Model.DataAccess
                 if (connection.State == ConnectionState.Closed)
                     connection.Open();
 
-                using (SqlCommand cmd = new SqlCommand(SpGetActivity, connection))
+                using (SqlCommand cmd = new SqlCommand(SpGetPatientMeasurements, connection))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
+                            int bodyfatIndex = reader.GetOrdinal("GrasaCorporal");
+                            int caloriesIndex = reader.GetOrdinal("Calorias");
+                            int bmrIndex = reader.GetOrdinal("BMR");
+                            int tdeIndex = reader.GetOrdinal("TDEE");
+
                             PatientMeasurementModel patientMeasurement = new PatientMeasurementModel
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("idPacienteMedicion")),
                                 IdNutritionalProfile = reader.GetInt32(reader.GetOrdinal("idPerfilNutricional")),
-                                Weight = reader.GetInt32(reader.GetOrdinal("Peso")),
-                                BodyFat = reader.GetInt32(reader.GetOrdinal("GrasaCorporal")),
-                                Calories = reader.GetInt32(reader.GetOrdinal("Calorias")),
-                                BMR = reader.GetInt32(reader.GetOrdinal("BMR")),
-                                TDEE = reader.GetInt32(reader.GetOrdinal("TDEE")),
+                                Weight = reader.GetDecimal(reader.GetOrdinal("Peso")),
+                                BodyFat = reader.IsDBNull(bodyfatIndex) ? null : reader.GetInt32(bodyfatIndex),
+                                Calories = reader.IsDBNull(caloriesIndex) ? null : reader.GetInt32(caloriesIndex),
+                                BMR = reader.IsDBNull(bmrIndex) ? null : reader.GetInt32(bmrIndex),
+                                TDEE = reader.IsDBNull(tdeIndex) ? null : reader.GetInt32(tdeIndex),
                                 Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
                             };
                             patientMeasurements.Add(patientMeasurement);

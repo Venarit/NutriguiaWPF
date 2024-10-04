@@ -4,7 +4,7 @@
 	[idPerfilNutricional] INT NOT NULL,
 	[Peso] NUMERIC NOT NULL,
 	[GrasaCorporal] INT NULL,
-	[Calorias] INT NULL,
+	--[Calorias] INT NULL, -- no era bmr lo mismo? TODO: revisar
 	[BMR] INT NULL,
 	[TDEE] INT NULL,
 	[Activo] BIT NOT NULL DEFAULT(1),

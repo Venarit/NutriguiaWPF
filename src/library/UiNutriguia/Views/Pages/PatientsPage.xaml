@@ -132,14 +132,56 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Border Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" CornerRadius="10" VerticalAlignment="Stretch"/>
-                        <TextBlock x:Name="tb_nullNutritionalProfile" Text="No existe perfil nutricional" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
+                        <Border Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" CornerRadius="5" VerticalAlignment="Stretch"/>
+
+                        <TextBlock x:Name="tb_nullNutritionalProfile" Text="No existe perfil nutricional" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
                             <ui:SymbolIcon Symbol="Info28" Margin="5,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </TextBlock>
 
+                        <Grid x:Name="gd_NutritionalProfile" DataContext="{Binding SelectedPatient.NutritionalProfile}" Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.2*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Altura" Grid.Column="0" Grid.Row="0" Target="{Binding ElementName=tb_Height}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="1" Grid.Row="0" >
+                                <TextBlock x:Name="tb_Height" Text="{Binding Height}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+                            
+                            <Label Content="Sexo" Grid.Column="2" Grid.Row="0" Target="{Binding ElementName=tb_Sex}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="3" Grid.Row="0" >
+                                <TextBlock x:Name="tb_Sex" Text="{Binding Sex}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Label Content="Actividad" Grid.Column="0" Grid.Row="1" Target="{Binding ElementName=tb_Activity}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" >
+                                <TextBlock x:Name="tb_Activity" Text="{Binding Activity.Code}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Label Content="Objetivo" Grid.Column="0" Grid.Row="2" Target="{Binding ElementName=tb_Objective}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" >
+                                <TextBlock x:Name="tb_Objective" Text="{Binding Objective.Code}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Label Content="Macronutrientes" Grid.Column="0" Grid.Row="3" Target="{Binding ElementName=tb_Macronutrients}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" >
+                                <TextBlock x:Name="tb_Macronutrients" Text="{Binding Macronutrient.Code}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+
+                        </Grid>
+
                     </Grid>
 
-                    <ui:Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,5" Content="+" />
+                    <ui:Button Grid.Column="1" Grid.Row="0" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddProfilePage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,5" Content="+" />
 
                     <Grid Margin="10,10,5,10" Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
@@ -149,15 +191,50 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Border Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" CornerRadius="10"/>
+                        <Border Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" CornerRadius="5"/>
 
-                        <TextBlock x:Name="tb_nullPatientMeasurement" Text="No existen mediciones" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
+                        <TextBlock x:Name="tb_nullPatientMeasurement" Text="No existen mediciones" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
                             <ui:SymbolIcon Symbol="Info28" Margin="5,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </TextBlock>
 
+                        <Grid x:Name="gd_PatientMeasurements" DataContext="{Binding SelectedPatient.NutritionalProfile.PatientMeasurement}" Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.6*" />
+                                <RowDefinition Height="0.6*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Peso (kg)" Grid.Column="0" Grid.Row="0" Target="{Binding ElementName=tb_Weight}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="1" Grid.Row="0" >
+                                <TextBlock x:Name="tb_Weight" Text="{Binding Weight}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Label Content="Grasa Corporal" Grid.Column="2" Grid.Row="0" Target="{Binding ElementName=tb_BodyFat}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="3" Grid.Row="0" >
+                                <TextBlock x:Name="tb_BodyFat" Text="{Binding BodyFat}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Label Content="BMR" Grid.Column="0" Grid.Row="1" Target="{Binding ElementName=tb_BMR}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="1" Grid.Row="1" >
+                                <TextBlock x:Name="tb_BMR" Text="{Binding BMR}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Label Content="TDEE" Grid.Column="2" Grid.Row="1" Target="{Binding ElementName=tb_TDEE}" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <Border Background="{ui:ThemeResource LayerFillColorAltBrush}" CornerRadius="5" Margin="5,5" Grid.Column="3" Grid.Row="1" >
+                                <TextBlock x:Name="tb_TDEE" Text="{Binding TDEE}" Margin="10,0" FontWeight="DemiBold" TextAlignment="Left" VerticalAlignment="Center" />
+                            </Border>
+
+                        </Grid>
+
                     </Grid>
 
-                    <ui:Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,10" Content="+" />
+                    <ui:Button Grid.Column="1" Grid.Row="1" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,10" Content="+" />
 
                 </Grid>
 

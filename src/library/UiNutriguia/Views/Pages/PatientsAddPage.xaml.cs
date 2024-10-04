@@ -55,7 +55,7 @@ namespace UiNutriguia.Views.Pages
                 catch (Exception ex)
                 {
                     resultMessage = ex.Message;
-                    Console.WriteLine("Error retrieving patients: " + ex.Message);
+                    Console.WriteLine("Error saving patients: " + ex.Message);
                 }
 
                 //TODO : DISPLAY SQL RESULT MESSAGE IN SNACKBAR

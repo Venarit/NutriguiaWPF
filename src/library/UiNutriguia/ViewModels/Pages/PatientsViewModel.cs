@@ -2,6 +2,7 @@
 using System.Diagnostics.Tracing;
 using System.Windows.Navigation;
 using UiNutriguia.Models;
+using UiNutriguia.Views.Pages;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
@@ -12,17 +13,33 @@ namespace UiNutriguia.ViewModels.Pages
         private bool _isInitialized = false;
         private ISnackbarService snackbarService;
         private ControlAppearance _snackbarAppearance = ControlAppearance.Secondary;
+        private DataAccess dataAccess;
+
+        #region Observables properties
 
         [ObservableProperty]
         private IEnumerable<PatientModel> _patients;
 
-        private DataAccess dataAccess;
+        [ObservableProperty]
+        private IEnumerable<ActivityModel> _activities;
+        
+        [ObservableProperty]
+        private IEnumerable<ObjectiveModel> _objectives;
+
+        [ObservableProperty]
+        private IEnumerable<MacronutrientModel> _macronutrients;
+
+        #endregion
+
+        #region Commands
 
         [RelayCommand]
         private void GotoPage(Type type)
         {
             _ = navigationService.Navigate(type);
         }
+        
+        #endregion
 
         public void OpenSnackBar(bool result, string message)
         {
@@ -50,6 +67,11 @@ namespace UiNutriguia.ViewModels.Pages
             }
         }
 
+        public void AddProfile(NutritionalProfileModel profile)
+        {
+
+        }
+
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
@@ -66,10 +88,19 @@ namespace UiNutriguia.ViewModels.Pages
             this.dataAccess = new DataAccess();
 
             var patientCollection = new List<PatientModel>();
-            
+            var activityCollection = new List<ActivityModel>();
+            var objectiveCollection = new List<ObjectiveModel>();
+            var macroCollection = new List<MacronutrientModel>();
+
             patientCollection = this.dataAccess.GetPatients();
+            activityCollection = this.dataAccess.GetActivities();
+            objectiveCollection = this.dataAccess.GetObjectives();
+            macroCollection = this.dataAccess.GetMacronutrients();
 
             Patients = patientCollection;
+            Activities = activityCollection;
+            Objectives = objectiveCollection;
+            Macronutrients = macroCollection;
             
             _isInitialized = true;
         }

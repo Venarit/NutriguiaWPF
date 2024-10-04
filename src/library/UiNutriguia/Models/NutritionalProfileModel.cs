@@ -1,4 +1,5 @@
-﻿namespace UiNutriguia.Models
+﻿
+namespace UiNutriguia.Models
 {
     public class NutritionalProfileModel : BaseModel
     {
