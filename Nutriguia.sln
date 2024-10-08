@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutriguia", "src\library\Nutriguia\Nutriguia.csproj", "{842AA01B-C1A3-40A0-BBCD-AC7804B5895C}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NutriguiaBD", "src\database\NutriguiaBD\NutriguiaBD.sqlproj", "{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutriguia.Model", "src\library\Nutriguia.Model\Nutriguia.Model.csproj", "{C2094D02-7CCE-4675-BBF3-E8664F1FE733}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutriguia.ViewModel", "src\library\Nutriguia.ViewModel\Nutriguia.ViewModel.csproj", "{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UiNutriguia", "src\library\UiNutriguia\UiNutriguia.csproj", "{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}"
 EndProject
@@ -19,24 +13,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{842AA01B-C1A3-40A0-BBCD-AC7804B5895C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{842AA01B-C1A3-40A0-BBCD-AC7804B5895C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{842AA01B-C1A3-40A0-BBCD-AC7804B5895C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{842AA01B-C1A3-40A0-BBCD-AC7804B5895C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA3E3BD9-D906-4E7B-8D02-2E090F1808E9}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{C2094D02-7CCE-4675-BBF3-E8664F1FE733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2094D02-7CCE-4675-BBF3-E8664F1FE733}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2094D02-7CCE-4675-BBF3-E8664F1FE733}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2094D02-7CCE-4675-BBF3-E8664F1FE733}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB40DB5E-13E1-416B-9CF0-BE7557BBD200}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
