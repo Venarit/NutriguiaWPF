@@ -1,4 +1,4 @@
-﻿namespace Nutriguia.Model
+﻿namespace Nutriguia.Model.Models
 {
     public class MainModel
     {

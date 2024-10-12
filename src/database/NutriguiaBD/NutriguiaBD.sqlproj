@@ -91,5 +91,6 @@
     <Build Include="Catalogo\Stored Procedures\GetActividad.sql" />
     <Build Include="Paciente\Stored Procedures\GetPerfilesNutricionales.sql" />
     <Build Include="Paciente\Stored Procedures\GetPacienteMediciones.sql" />
+    <Build Include="Paciente\Stored Procedures\SetPerfilNutricional.sql" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NutriguiaBD", "src\database
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UiNutriguia", "src\library\UiNutriguia\UiNutriguia.csproj", "{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutriguia.ViewModel", "src\library\Nutriguia.ViewModel\Nutriguia.ViewModel.csproj", "{C2ADE14E-FB92-4402-AC64-745AE882B048}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nutriguia.Model", "src\library\Nutriguia.Model\Nutriguia.Model.csproj", "{92EE7233-AF7A-4A24-9FA2-D34330BA1995}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E5D1FF6-0FE7-4F89-AE31-D02C419678DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2ADE14E-FB92-4402-AC64-745AE882B048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2ADE14E-FB92-4402-AC64-745AE882B048}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2ADE14E-FB92-4402-AC64-745AE882B048}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2ADE14E-FB92-4402-AC64-745AE882B048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92EE7233-AF7A-4A24-9FA2-D34330BA1995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92EE7233-AF7A-4A24-9FA2-D34330BA1995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92EE7233-AF7A-4A24-9FA2-D34330BA1995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92EE7233-AF7A-4A24-9FA2-D34330BA1995}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
