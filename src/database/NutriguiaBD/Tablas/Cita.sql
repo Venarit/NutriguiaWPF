@@ -1,0 +1,15 @@
+﻿CREATE TABLE [dbo].[Cita]
+(
+	[idCita] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[idPaciente] INT NOT NULL,
+	[idEstadoCita] INT NOT NULL DEFAULT(1),
+	[Fecha] DATE NOT NULL,
+	[HoraInicio] TIME NOT NULL,
+	[HoraFin] TIME NOT NULL,
+	[Notas] TEXT NULL,
+	[Activo] BIT NOT NULL DEFAULT(1),
+	[UpdDateTime] DATETIMEOFFSET(7) NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
+	[InsDateTime] DATETIMEOFFSET(7) NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
+	FOREIGN KEY (idPaciente) REFERENCES [Paciente].[Paciente](idPaciente),
+	FOREIGN KEY (idEstadoCita) REFERENCES [Catalogo].[EstadoCita](idEstadoCita)
+)

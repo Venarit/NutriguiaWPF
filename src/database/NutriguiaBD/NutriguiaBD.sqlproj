@@ -68,6 +68,7 @@
     <Folder Include="Paciente" />
     <Folder Include="Paciente\Tablas" />
     <Folder Include="Paciente\Stored Procedures" />
+    <Folder Include="Tablas" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Alimento\Tablas\Alimento.sql" />
@@ -91,5 +92,7 @@
     <Build Include="Catalogo\Stored Procedures\GetActividad.sql" />
     <Build Include="Paciente\Stored Procedures\GetPerfilesNutricionales.sql" />
     <Build Include="Paciente\Stored Procedures\GetPacienteMediciones.sql" />
+    <Build Include="Tablas\Cita.sql" />
+    <Build Include="Catalogo\Tablas\EstadoCita.sql" />
   </ItemGroup>
 </Project>

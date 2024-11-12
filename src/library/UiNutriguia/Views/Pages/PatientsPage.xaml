@@ -86,7 +86,7 @@
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding Email, Mode=OneWay}"/>
                             <ui:Button Grid.Column="2" Grid.RowSpan="2" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6,6"
-                                       Command="{Binding EditPatient}">
+                                       Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}">
                                 <ui:SymbolIcon Symbol="Edit20" />
                             </ui:Button>
                         </Grid>
@@ -105,6 +105,7 @@
                     <RowDefinition Height="0.05*" />
                     <RowDefinition Height="0.06*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="0.15*" />
                 </Grid.RowDefinitions>
 
                 <Ellipse Grid.Row="0" Grid.Column="1" Margin="10,10" Opacity="30" Fill="{ui:ThemeResource ControlFillColorSecondaryBrush}" />
@@ -236,6 +237,10 @@
 
                     <ui:Button Grid.Column="1" Grid.Row="1" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,10" Content="+" />
 
+                </Grid>
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="3" Margin="10,10,5,10">
+                    
                 </Grid>
 
             </Grid>

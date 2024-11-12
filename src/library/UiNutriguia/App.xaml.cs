@@ -53,6 +53,9 @@ namespace UiNutriguia
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsViewModel>();
 
+                services.AddSingleton<SchedulerPage>();
+                services.AddSingleton<SchedulerViewModel>();
+
                 services.AddSingleton<PatientsPage>();
                 services.AddSingleton<PatientsViewModel>();
                 services.AddSingleton<PatientsAddPage>();

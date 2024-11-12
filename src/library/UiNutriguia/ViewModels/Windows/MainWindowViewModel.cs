@@ -6,7 +6,7 @@ namespace UiNutriguia.ViewModels.Windows
     public partial class MainWindowViewModel : ObservableObject
     {
         [ObservableProperty]
-        private string _applicationTitle = "WPF UI - UiNutriguia";
+        private string _applicationTitle = "";
 
         [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()
@@ -22,6 +22,12 @@ namespace UiNutriguia.ViewModels.Windows
                 Content = "Data",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DataHistogram24 },
                 TargetPageType = typeof(Views.Pages.DataPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Calendario",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.CalendarLtr28 },
+                TargetPageType = typeof(Views.Pages.SchedulerPage)
             },
             new NavigationViewItem()
             {
