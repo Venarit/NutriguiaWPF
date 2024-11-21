@@ -8,11 +8,13 @@ namespace UiNutriguia.Models
 {
     public class PatientMeasurementModel: BaseModel
     {
+        public required int IdPatientMeasurementModel { get; set; }
         public required int IdNutritionalProfile { get; set; }
         public decimal Weight { get; set; }
         public int? BodyFat { get; set; }
         public int? Calories { get; set; }
         public int? BMR { get; set; }
         public int? TDEE { get; set; }
+        public NutritionalProfileModel? NutritionalProfileModel { get; set; }
     }
 }

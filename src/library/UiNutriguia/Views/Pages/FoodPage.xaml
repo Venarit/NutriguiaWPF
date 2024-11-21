@@ -1,0 +1,96 @@
+﻿<Page x:Class="UiNutriguia.Views.Pages.FoodPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UiNutriguia.Views.Pages"
+      mc:Ignorable="d" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      d:DataContext="{d:DesignInstance local:FoodPage,
+               IsDesignTimeCreatable=False}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      ScrollViewer.CanContentScroll="False"
+      Title="FoodPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ui:AutoSuggestBox Grid.Row="0" PlaceholderText="Buscar Alimento..." Margin="1,0"
+                           OriginalItemsSource="{Binding ViewModel.Foods, Mode=OneWay}"
+                           Text="{Binding ViewModel.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           DisplayMemberPath="Name"/>
+        
+        <Border Grid.Row="1" Background="{ui:ThemeResource SmokeFillColorDefaultBrush}" Margin="0,20,0,10" CornerRadius="5">
+            <DataGrid ItemsSource="{Binding ViewModel.Foods, Mode=OneWay}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="True"
+                      EnableRowVirtualization="True" EnableColumnVirtualization="False" AutoGenerateColumns="False">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="{ui:ThemeResource ControlFillColorDefaultBrush}" />
+                        <Setter Property="FontSize" Value="25" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Height" Value="35" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Tipo">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding ViewModel.FoodTypes, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          SelectedItem="{Binding ViewModel.SelectedFoodType, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          DisplayMemberPath="Code"
+                                          Width="150" Margin="0" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Type.Code}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Nombre"             CanUserSort="True" Width="Auto"     Binding="{Binding Name}"            />
+                    <DataGridTextColumn Header="Cantidad"           CanUserSort="True" Width="Auto"     Binding="{Binding Quantity}"        />
+                    <DataGridTemplateColumn Header="Tipo">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding ViewModel.Units, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          SelectedItem="{Binding ViewModel.SelectedFoodUnit, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                          DisplayMemberPath="Code"
+                                          Width="150" Margin="0" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Unit.Code}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Peso Bruto"         CanUserSort="True" Width="Auto"     Binding="{Binding GrossWeight}"     />
+                    <DataGridTextColumn Header="Peso Neto"          CanUserSort="True" Width="Auto"     Binding="{Binding NetWeight}"       />
+                    <DataGridTextColumn Header="Energia"            CanUserSort="True" Width="Auto"     Binding="{Binding Energy}"          />
+                    <DataGridTextColumn Header="Proteina"           CanUserSort="True" Width="Auto"     Binding="{Binding Protein}"         />
+                    <DataGridTextColumn Header="Lipidos"            CanUserSort="True" Width="Auto"     Binding="{Binding Lipids}"          />
+                    <DataGridTextColumn Header="Hco"                CanUserSort="True" Width="Auto"     Binding="{Binding Hco}"             />
+                    <DataGridTextColumn Header="Fibra"              CanUserSort="True" Width="Auto"     Binding="{Binding Fiber}"           />
+                    <DataGridTextColumn Header="Vitamina A"         CanUserSort="True" Width="Auto"     Binding="{Binding VitaminA}"        />
+                    <DataGridTextColumn Header="Acido Ascorbico"    CanUserSort="True" Width="Auto"     Binding="{Binding AscorbicAcid}"    />
+                    <DataGridTextColumn Header="Acido Folico"       CanUserSort="True" Width="Auto"     Binding="{Binding FolicAcid}"       />
+                    <DataGridTextColumn Header="Hierro"             CanUserSort="True" Width="Auto"     Binding="{Binding Iron}"            />
+                    <DataGridTextColumn Header="Potasio"            CanUserSort="True" Width="Auto"     Binding="{Binding Potasium}"        />
+                    <DataGridTextColumn Header="Indice Glicemico"   CanUserSort="True" Width="Auto"     Binding="{Binding GlycemicIndex}"   />
+                    <DataGridTextColumn Header="Carga Glicemica"    CanUserSort="True" Width="Auto"     Binding="{Binding GlycemicLoad}"    />
+                    <DataGridTextColumn Header="Azucar"             CanUserSort="True" Width="Auto"     Binding="{Binding Sugar}"           />
+                    <DataGridTextColumn Header="Sodio"              CanUserSort="True" Width="Auto"     Binding="{Binding Sodium}"          />
+                    <DataGridTextColumn Header="Calcio"             CanUserSort="True" Width="Auto"     Binding="{Binding Calcium}"         />
+                    <DataGridTextColumn Header="Selenio"            CanUserSort="True" Width="Auto"     Binding="{Binding Selenium}"        />
+                    <DataGridTextColumn Header="Fosforo"            CanUserSort="True" Width="Auto"     Binding="{Binding Phosphorus}"      />
+                    <DataGridTextColumn Header="Colesterol"         CanUserSort="True" Width="Auto"     Binding="{Binding Colesterol}"      />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</Page>

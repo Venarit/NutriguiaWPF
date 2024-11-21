@@ -39,6 +39,7 @@ namespace UiNutriguia.Views.Pages
 
                     PatientModel patient = new PatientModel
                     {
+                        IdPatient = 0,
                         Name = tbName.Text.Trim(),
                         SecondName = string.IsNullOrEmpty(tbSecondName.Text) ? null : tbSecondName.Text.Trim(),
                         LastNameP = tbLastNameP.Text.Trim(),

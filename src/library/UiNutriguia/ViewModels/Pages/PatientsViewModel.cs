@@ -59,7 +59,7 @@ namespace UiNutriguia.ViewModels.Pages
         {
             try
             {
-                this.dataAccess.SetPatients(patient);
+                //this.dataAccess.SetPatients(patient);
             }
             catch (Exception ex)
             {

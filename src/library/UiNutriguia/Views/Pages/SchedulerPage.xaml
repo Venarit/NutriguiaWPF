@@ -16,52 +16,107 @@
       ScrollViewer.CanContentScroll="False"
       Title="SchedulerPage">
 
-    <Page.Resources>
-        <!-- Estilo personalizado para aumentar el tamaño de los botones de días en el calendario -->
-        <Style TargetType="CalendarItem">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <ContentPresenter x:Name="ContentPresenterForDialogs"/>
+
         <!-- Calendar para seleccionar fechas -->
         <Calendar SelectedDate="{Binding ViewModel.SelectedDate}"  Grid.Column="0" />
 
         <!-- Lista de citas -->
-        <StackPanel Grid.Column="1" Margin="10">
-            <ui:TextBlock FontTypography="Title" Text="{Binding ViewModel.SelectedDateOnly}" Margin="0,0,0,10"/>
-            <ListView ItemsSource="{Binding Appointments}">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type models:AppointmentModel}">
-                        <Grid Margin="8,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="50" />
-                            </Grid.ColumnDefinitions>
-                            <Border Background="{ui:ThemeResource ControlStrongStrokeColorDefaultBrush}">
-                                <TextBlock Text="{Binding StartHour}"></TextBlock>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+        <Grid Grid.Column="1" Margin="20,0" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <Border Grid.Row="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+                <ui:TextBlock FontTypography="Title" Text="{Binding ViewModel.SelectedDateOnlyString}" FontWeight="Thin" Margin="15"/>
+            </Border>
 
-            <!-- Botón para agregar una nueva cita -->
-            <Button Content="Agregar Cita" Command="{Binding AddAppointmentCommand}" Margin="0,10,0,0"/>
-        </StackPanel>
+            <Border Grid.Row="1" Background="{ui:ThemeResource SmokeFillColorDefaultBrush}" Margin="0,20,0,10" CornerRadius="5">
+
+                <ui:ListView Grid.Column="0"
+                             Grid.Row="1" 
+                             ItemsSource="{Binding ViewModel.Appointments}" >   
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:AppointmentModel}">
+                            <Grid Margin="10,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.05*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="0.3*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="0.01*" />
+                                </Grid.RowDefinitions>
+                                
+                                <Grid Grid.Row="0" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <ui:TextBlock Text="{Binding StartDateTime, Mode=OneWay, StringFormat='{}{0:HH:mm}'}"
+                                               FontWeight="Light"
+                                               FontSize="18" 
+                                               Grid.Column="0" Grid.Row="0">
+                                    </ui:TextBlock>
+                                    <ui:TextBlock Text="-" Grid.Column="1" Grid.Row="0" FontWeight="Light" FontSize="18" Margin="10,0"/>
+                                    <ui:TextBlock Text="{Binding EndDateTime, Mode=OneWay, StringFormat='{}{0:HH:mm}'}"
+                                                  FontWeight="Light"
+                                                  FontSize="18"
+                                                  Grid.Column="2" Grid.Row="0">
+                                    </ui:TextBlock>
+                                    <Separator Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="2"/>
+                                </Grid>
+                                
+                                <ui:TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" FontWeight="Light" FontSize="20" Margin="0,8">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1} {2}">
+                                            <Binding Path="Patient.Name"/>
+                                            <Binding Path="Patient.LastNameP" />
+                                            <Binding Path="Patient.LastNameM" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </ui:TextBlock>
+                                
+                                <ui:TextBlock Text="Estado" Grid.Column="3" Grid.Row="0" FontWeight="Light" FontSize="15" Margin="10,0"/>
+                                
+                                <Border Grid.Row="1" Grid.Column="3" Background="{ui:ThemeResource AccentTextFillColorDisabledBrush}" CornerRadius="8" Visibility="{Binding IsEditing}">
+                                    <ui:TextBlock  FontWeight="Light" FontSize="18" Margin="5,0" Text="{Binding AppointmentStatus.Code}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                
+                                <Separator Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="1" Margin="0,5,0,0"/>
+
+                                <!--EDIT BUTTON-->
+                                <ui:Button Grid.RowSpan="3" Grid.Row="0" Grid.Column="0" Margin="0,0,25,0" Height="70" Width="40" 
+                                           Command="{Binding ViewModel.EditAppointmentCommand, RelativeSource={RelativeSource AncestorType=Page}}" 
+                                           CommandParameter="{Binding}" >
+                                    <ui:SymbolIcon Symbol="Edit20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </ui:Button>
+                                
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ui:ListView>
+                
+            </Border>
+
+            <Button Grid.Row="2" Content="Agregar Cita" Command="{Binding ViewModel.AddAppointmentCommand}" Width="10000" Height="40" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+            
+        </Grid>
     </Grid>
 </Page>

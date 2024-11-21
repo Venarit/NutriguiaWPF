@@ -1,23 +1,26 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
-using System.Collections.Generic;
 using UiNutriguia.Models;
 using System.Configuration;
-using System.Diagnostics;
+using Dapper;
+using System.Windows.Media;
+using static Dapper.SqlMapper;
 
 namespace Nutriguia.Model.DataAccess
 {
     public class DataAccess
     {
         #region Stored Procedures
-        private const string SpGetPatients = "[Paciente].[GetPacientes]";
-        private const string SpSetPatients = "[Paciente].[SetPacientes]";
-        private const string SpGetNutritionalProfiles = "[Paciente].[GetPerfilesNutricionales]";
-        private const string SpGetPatientMeasurements = "[Paciente].[GetPacienteMediciones]";
-        private const string SpGetActivity = "[Catalogo].[GetActividad]";
-        private const string SpGetMacronutrients = "[Catalogo].[GetMacronutrientes]";
-        private const string SpGetObjectives = "[Catalogo].[GetObjetivo]";
+        private const string SpGetFood = "[Food].[GetFood]";
+        private const string SpGetFoodTypes = "[Food].[GetFoodTypes]";
+        private const string SpGetFoodUnits = "[Food].[GetFoodUnits]";
+        private const string SpGetPatients = "[Patient].[GetPatients]";
+        private const string SpGetActivities = "[Catalog].[GetActivities]";
+        private const string SpGetObjectives = "[Catalog].[GetObjectives]";
+        private const string SpGetMacronutrients = "[Catalog].[GetMacronutrients]";
+        private const string SpGetAppointmentsStatuses = "[Catalog].[GetAppointmentStatuses]";
+        private const string SpGetAppointments = "[dbo].[GetAppointments]";
         #endregion
 
         private SqlConnection connection;
@@ -42,341 +45,208 @@ namespace Nutriguia.Model.DataAccess
         {
             return ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
         }
+        private SqlConnection GetSqlConnection()
+        {
+            var config = ConfigurationManager.ConnectionStrings["DbConnection"];
+            var returnValue = new SqlConnection(config.ConnectionString);
+            returnValue.Open();
+            return returnValue;
+        }
+
+        public sealed class CustomGridReader : IDisposable
+        {
+            private readonly SqlConnection connection;
+
+            internal CustomGridReader(SqlConnection connection, GridReader reader)
+            {
+                this.connection = connection;
+                this.Reader = reader;
+            }
+
+            internal GridReader Reader
+            {
+                get;
+                private set;
+            }
+
+            public void Dispose()
+            {
+            }
+        }
+
+        private List<T> Query<T>(string sp, object parms, CommandType commandType = CommandType.StoredProcedure)
+        {
+            List<T> result = null;
+
+            try
+            {
+                var config = ConfigurationManager.ConnectionStrings["DbConnection"];
+                using (var connection = new SqlConnection(config.ConnectionString))
+                {
+                    connection.Open();
+                    result = connection.Query<T>(sp, parms, commandType: commandType).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
+            return result;
+        }
+
+        private CustomGridReader QueryMultiple(SqlConnection connection, string sp, object parms, CommandType commandType = CommandType.StoredProcedure)
+        {
+            CustomGridReader result = null;
+
+            try
+            {
+                result = new CustomGridReader(connection, connection.QueryMultiple(sp, parms, commandType: commandType));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+
+            return result;
+        }
 
         public List<PatientModel> GetPatients()
         {
-            List<PatientModel> patients = new List<PatientModel>();
-            List<NutritionalProfileModel> nutritionalProfiles = GetNutritionalProfiles();
-
-            try
+            List<PatientModel> returnValue;
+            using (var connection = this.GetSqlConnection())
             {
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpGetPatients, connection))
+                using (var multiple = this.QueryMultiple(connection, SpGetPatients, null))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    returnValue = multiple.Reader.Read<PatientModel>().ToList();
+                    var profiles = multiple.Reader.Read<NutritionalProfileModel>().ToList();
+                    var measurements = multiple.Reader.Read<PatientMeasurementModel>().ToList();
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    var activities = GetActivities();
+                    var objectives = GetObjectives();
+                    var macronutrients = GetMacronutrients();
+                    
+                    foreach (var profile in profiles)
                     {
-                        int secondNameIndex = reader.GetOrdinal("SegundoNombre");
-                        int lastNameMIndex = reader.GetOrdinal("Apellido_M");
+                        var measurement = measurements.FirstOrDefault(m => m.IdNutritionalProfile == profile.IdNutritionalProfile);
+                        if (measurement != null)
+                            profile.PatientMeasurement = measurement;
 
-                        while (reader.Read())
-                        {
-                            PatientModel patient = new PatientModel
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("idPaciente")),
-                                Name = reader.GetString(reader.GetOrdinal("Nombre")),
-                                SecondName = reader.IsDBNull(secondNameIndex) ? null : reader.GetString(secondNameIndex),
-                                LastNameP = reader.GetString(reader.GetOrdinal("Apellido_P")),
-                                LastNameM = reader.IsDBNull(lastNameMIndex) ? null : reader.GetString(lastNameMIndex),
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                Cellphone = reader.GetString(reader.GetOrdinal("Celular")),
-                                BirthDate = reader.GetString(reader.GetOrdinal("FechaNacimiento")),
-                                Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
-                            };
+                        var activity = activities.FirstOrDefault(a => a.IdActivity == profile.IdActivity);
+                        if (activity != null)
+                            profile.Activity = activity;
 
-                            patient.NutritionalProfile = nutritionalProfiles.FirstOrDefault(x => x.idPatient == patient.Id);
+                        var objective = objectives.FirstOrDefault(o => o.IdObjective == profile.IdObjective);
+                        if (objective != null)
+                            profile.Objective = objective;
 
-                            patients.Add(patient);
-                        }
+                        var macronutrient = macronutrients.FirstOrDefault(m => m.IdMacronutrient == profile.IdMacronutrients);
+                        if (macronutrient != null)
+                            profile.Macronutrient = macronutrient;
+                    }
+
+                    foreach (var patient in returnValue)
+                    {
+                        var profile = profiles.FirstOrDefault(t => t.IdPatient == patient.IdPatient);
+                        if (profile != null)
+                            patient.NutritionalProfile = profile;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error retrieving patients: " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
 
-            return patients;
+            return returnValue.ToList();
         }
-        public List<NutritionalProfileModel> GetNutritionalProfiles()
+
+        public List<FoodModel> GetFoods(int? idFoodType, int? idUnit)
         {
-            List<NutritionalProfileModel> nutritionalProfiles = new List<NutritionalProfileModel>();
-
-            try
+            List<FoodModel> returnValue;
+            using (var connection = this.GetSqlConnection())
             {
-                List<ActivityModel> activities = GetActivities();
-                List<ObjectiveModel> objectives = GetObjectives();
-                List<MacronutrientModel> macronutrients = GetMacronutrients();
-
-                List<PatientMeasurementModel> patientMeasurements = GetPatientMeasurements();
-
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpGetNutritionalProfiles, connection))
+                using (var multiple = this.QueryMultiple(connection, SpGetFood, new { @IdFoodType = idFoodType, @IdUnit = idUnit }))
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    returnValue = multiple.Reader.Read<FoodModel>().ToList();
+                    var types = multiple.Reader.Read<FoodTypeModel>().ToList();
+                    var units = multiple.Reader.Read<FoodEguModel>().ToList();
+                    foreach (var food in returnValue)
                     {
-                        while (reader.Read())
-                        {
-                            NutritionalProfileModel nutritionalProfile = new NutritionalProfileModel
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("idPerfilNutricional")),
-                                idPatient = reader.GetInt32(reader.GetOrdinal("idPaciente")),
-                                Height = reader.GetInt32(reader.GetOrdinal("Altura")),
-                                Sex = reader.GetString(reader.GetOrdinal("Sexo")),
-                                Activity = activities.FirstOrDefault(a => a.Id == reader.GetInt32(reader.GetOrdinal("idActividad"))),
-                                Objective = objectives.FirstOrDefault(o => o.Id == reader.GetInt32(reader.GetOrdinal("idObjetivo"))),
-                                Macronutrient = macronutrients.FirstOrDefault(m => m.Id == reader.GetInt32(reader.GetOrdinal("idMacronutrientes"))),
-                                Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
-                            };
+                        var type = types.FirstOrDefault(t => t.IdFoodType == food.IdFoodType);
+                        if (type != null)
+                            food.Type = type;
 
-                            nutritionalProfile.PatientMeasurement = patientMeasurements.FirstOrDefault(m => m.IdNutritionalProfile == nutritionalProfile.Id);
-
-                            nutritionalProfiles.Add(nutritionalProfile);
-                        }
+                        var unit = units.FirstOrDefault(u => u.IdUnit == food.IdUnit);
+                        if (unit != null)
+                            food.Unit = unit;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error retrieving patient nutritional profiles : " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-            return nutritionalProfiles;
+
+            return returnValue.ToList();
         }
-        public List<PatientMeasurementModel> GetPatientMeasurements()
+
+        public List<FoodTypeModel> GetFoodTypes()
         {
-            List<PatientMeasurementModel> patientMeasurements = new List<PatientMeasurementModel>();
+            var returnValue = this.Query<FoodTypeModel>(SpGetFoodTypes, null).ToList();
+            return returnValue;
+        }
 
-            try
+        public List<FoodEguModel> GetFoodUnits()
+        {
+            var returnValue = this.Query<FoodEguModel>(SpGetFoodUnits, null).ToList();
+            return returnValue;
+        }
+
+        public List<AppointmentModel> GetAppointments(DateTime date)
+        {
+            List<AppointmentModel> returnValue;
+            using (var connection = this.GetSqlConnection())
             {
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpGetPatientMeasurements, connection))
+                using (var multiple = this.QueryMultiple(connection, SpGetAppointments, new { @Date = date }))
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    returnValue = multiple.Reader.Read<AppointmentModel>().ToList();
+                    var statuses = multiple.Reader.Read<AppointmentStatusModel>().ToList();
+                    var patients = multiple.Reader.Read<PatientModel>().ToList();
+                    foreach (var appointment in returnValue)
                     {
-                        while (reader.Read())
-                        {
-                            int bodyfatIndex = reader.GetOrdinal("GrasaCorporal");
-                            int caloriesIndex = reader.GetOrdinal("Calorias");
-                            int bmrIndex = reader.GetOrdinal("BMR");
-                            int tdeIndex = reader.GetOrdinal("TDEE");
+                        var status = statuses.FirstOrDefault(s => s.IdAppointmentStatus == appointment.IdAppointmentStatus);
+                        if (status != null)
+                            appointment.AppointmentStatus = status;
 
-                            PatientMeasurementModel patientMeasurement = new PatientMeasurementModel
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("idPacienteMedicion")),
-                                IdNutritionalProfile = reader.GetInt32(reader.GetOrdinal("idPerfilNutricional")),
-                                Weight = reader.GetDecimal(reader.GetOrdinal("Peso")),
-                                BodyFat = reader.IsDBNull(bodyfatIndex) ? null : reader.GetInt32(bodyfatIndex),
-                                Calories = reader.IsDBNull(caloriesIndex) ? null : reader.GetInt32(caloriesIndex),
-                                BMR = reader.IsDBNull(bmrIndex) ? null : reader.GetInt32(bmrIndex),
-                                TDEE = reader.IsDBNull(tdeIndex) ? null : reader.GetInt32(tdeIndex),
-                                Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
-                            };
-                            patientMeasurements.Add(patientMeasurement);
-                        }
+                        var patient = patients.FirstOrDefault(p => p.IdPatient == appointment.IdPatient);
+                        if (patient != null)
+                            appointment.Patient = patient;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error retrieving patient measurements : " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-            return patientMeasurements;
+
+            return returnValue.ToList();
         }
 
-        public void SetPatients(PatientModel patient)
-        {
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpSetPatients, connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.Add(new SqlParameter("@Nombre", patient.Name));
-                    cmd.Parameters.Add(new SqlParameter("@SegundoNombre", patient.SecondName));
-                    cmd.Parameters.Add(new SqlParameter("@ApellidoP", patient.LastNameP));
-                    cmd.Parameters.Add(new SqlParameter("@ApellidoM", patient.LastNameM));
-                    cmd.Parameters.Add(new SqlParameter("@Email", patient.Email));
-                    cmd.Parameters.Add(new SqlParameter("@Celular", patient.Cellphone));
-                    cmd.Parameters.Add(new SqlParameter("@FechaNacimiento", patient.BirthDate));
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error saving patients: " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-        }
-
-        #region Get Catalogs
-
+        #region Catalogs
         public List<ActivityModel> GetActivities()
         {
-            List<ActivityModel> activities = new List<ActivityModel>();
-
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpGetActivity, connection))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            ActivityModel activity = new ActivityModel
-                            { 
-                                Id = reader.GetInt32(reader.GetOrdinal("idActividad")),
-                                Code = reader.GetString(reader.GetOrdinal("Codigo")),
-                                Name = reader.GetString(reader.GetOrdinal("Nombre")),
-                                Description = reader.GetString(reader.GetOrdinal("Descripcion")),
-                                Factor = reader.GetDecimal(reader.GetOrdinal("Factor")),
-                                Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
-                            };
-
-                            activities.Add(activity);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error retrieving activities : " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-
-            return activities;
+            var returnValue = this.Query<ActivityModel>(SpGetActivities, null).ToList();
+            return returnValue;
         }
 
         public List<ObjectiveModel> GetObjectives()
         {
-            List<ObjectiveModel> objectives = new List<ObjectiveModel>();
-
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpGetObjectives, connection))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            ObjectiveModel objective = new ObjectiveModel
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("idObjetivo")),
-                                Code = reader.GetString(reader.GetOrdinal("Codigo")),
-                                Name = reader.GetString(reader.GetOrdinal("Nombre")),
-                                Description = reader.GetString(reader.GetOrdinal("Descripcion")),
-                                Calories = reader.GetInt32(reader.GetOrdinal("Calorias")),
-                                Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
-                            };
-
-                            objectives.Add(objective);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error retrieving objectives : " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-
-            return objectives;
+            var returnValue = this.Query<ObjectiveModel>(SpGetObjectives, null).ToList();
+            return returnValue;
         }
 
         public List<MacronutrientModel> GetMacronutrients()
         {
-            List<MacronutrientModel> macronutrients = new List<MacronutrientModel>();
-
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(SpGetMacronutrients, connection))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            MacronutrientModel macronutrient = new MacronutrientModel
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("idMacronutrientes")),
-                                Code = reader.GetString(reader.GetOrdinal("Codigo")),
-                                Name = reader.GetString(reader.GetOrdinal("Nombre")),
-                                Description = reader.GetString(reader.GetOrdinal("Descripcion")),
-                                Hco = reader.GetDecimal(reader.GetOrdinal("Hco")),
-                                Lipids = reader.GetDecimal(reader.GetOrdinal("Lipidos")),
-                                Protein = reader.GetDecimal(reader.GetOrdinal("Proteina")),
-                                Active = reader.GetBoolean(reader.GetOrdinal("Activo"))
-                            };
-
-                            macronutrients.Add(macronutrient);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error retrieving macronutrients : " + ex.Message);
-            }
-            finally
-            {
-                if (connection != null && connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-
-            return macronutrients;
+            var returnValue = this.Query<MacronutrientModel>(SpGetMacronutrients, null).ToList();
+            return returnValue;
         }
 
+        public List<AppointmentStatusModel> GetAppointmentStatuses()
+        {
+            var returnValue = this.Query<AppointmentStatusModel>(SpGetAppointmentsStatuses, null).ToList();
+            return returnValue;
+        }
         #endregion
     }
-
 }
-

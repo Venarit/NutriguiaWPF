@@ -19,12 +19,6 @@ namespace UiNutriguia.ViewModels.Windows
             },
             new NavigationViewItem()
             {
-                Content = "Data",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.DataHistogram24 },
-                TargetPageType = typeof(Views.Pages.DataPage)
-            },
-            new NavigationViewItem()
-            {
                 Content = "Calendario",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.CalendarLtr28 },
                 TargetPageType = typeof(Views.Pages.SchedulerPage)
@@ -34,6 +28,30 @@ namespace UiNutriguia.ViewModels.Windows
                 Content = "Pacientes",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.People24 },
                 TargetPageType = typeof(Views.Pages.PatientsPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Menús",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Food16 },
+                TargetPageType = typeof(Views.Pages.MenuPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Planes",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.ClipboardNote20 },
+                TargetPageType = typeof(Views.Pages.PlansPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Platillos",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.BowlSalad20 },
+                TargetPageType = typeof(Views.Pages.DishesPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Alimentos",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.FoodApple20 },
+                TargetPageType = typeof(Views.Pages.FoodPage)
             }
         };
 

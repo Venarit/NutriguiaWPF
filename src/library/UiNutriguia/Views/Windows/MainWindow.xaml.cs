@@ -12,7 +12,8 @@ namespace UiNutriguia.Views.Windows
         public MainWindow(
             MainWindowViewModel viewModel,
             IPageService pageService,
-            INavigationService navigationService
+            INavigationService navigationService,
+            IContentDialogService contentDialogService
         )
         {
             ViewModel = viewModel;
@@ -24,6 +25,7 @@ namespace UiNutriguia.Views.Windows
             SetPageService(pageService);
 
             navigationService.SetNavigationControl(RootNavigation);
+            contentDialogService.SetDialogHost(RootContentDialog);
         }
 
         #region INavigationWindow methods

@@ -8,6 +8,7 @@ namespace UiNutriguia.Models
 {
     public class ObjectiveModel : BaseCatalogModel
     {
+        public required int IdObjective { get; set; }
         public int Calories { get; set; }
     }
 }
