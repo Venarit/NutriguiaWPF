@@ -1,5 +1,7 @@
 ﻿using UiNutriguia.ViewModels.Pages;
 using Wpf.Ui.Controls;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace UiNutriguia.Views.Pages
 {

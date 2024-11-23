@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:UiNutriguia.Views.Pages"
+    xmlns:conv="clr-namespace:UiNutriguia.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     Title="DashboardPage"
     d:DataContext="{d:DesignInstance local:DashboardPage,
                                      IsDesignTimeCreatable=False}"
@@ -16,13 +18,220 @@
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <conv:TimeRangeConverter x:Key="TimeRangeConverter"/>
+    </Page.Resources>
+
     <Grid VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <ui:TextBlock FontTypography="TitleLarge" Text="{Binding ViewModel.Greeting}"/>
+        <ui:TextBlock Grid.Row="0" FontTypography="TitleLarge" Text="{Binding ViewModel.Greeting}"/>
 
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,10,0">
+                <StackPanel>
+                    <Grid Margin="20,20,20,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ui:SymbolIcon Symbol="ClipboardBulletListLtr16" Grid.Column="0" FontSize="34" VerticalAlignment="Center"/>
+                        <ui:TextBlock Text="Lo siguiente en tu agenda..." Grid.Column="1" FontSize="22" Margin="10,0" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ui:DataGrid Margin="20,15,20,30" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="True" Padding="0" GridLinesVisibility="Horizontal"
+                                 EnableRowVirtualization="True" EnableColumnVirtualization="False" AutoGenerateColumns="False" BorderBrush="Transparent" RowHeaderWidth="0"
+                                 ItemsSource="{Binding ViewModel.NextAppointments, Mode=OneWay}">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="{ui:ThemeResource ControlFillColorTertiaryBrush}" />
+                                <Setter Property="FontSize" Value="30" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Height" Value="55" />
+                                <Setter Property="Padding" Value="15" />
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="FontSize" Value="18" />
+                                <Setter Property="FontWeight" Value="Light" />
+                                <Setter Property="Padding" Value="15" />
+                                <Setter Property="Margin" Value="0,15,0,10" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="Height" Value="50" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Fecha" CanUserSort="False" Width="0.5*" 
+                                                Binding="{Binding StartDateTime, StringFormat='{}{0:dd-MM-yyyy}'}"/>
+                            <DataGridTextColumn Header="Horario"    CanUserSort="False" Width="0.6*">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding Converter="{StaticResource TimeRangeConverter}">
+                                        <Binding Path="StartDateTime"/>
+                                        <Binding Path="EndDateTime"/>
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Paciente"   CanUserSort="False" Width="1.1*"    Binding="{Binding Patient.FullName}"/>
+                            <DataGridTextColumn Header="Notas"      CanUserSort="False" Width="*"       Binding="{Binding Notes}"/>
+                            <DataGridTextColumn Header="Estado"     CanUserSort="False" Width="0.6*"    Binding="{Binding AppointmentStatus.Code}"/>
+                        </DataGrid.Columns>
+                    </ui:DataGrid>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="10,0,0,0">
+                <StackPanel>
+                    <Grid Margin="20,20,20,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ui:SymbolIcon Symbol="Accessibility32" Grid.Column="0" FontSize="34" VerticalAlignment="Center"/>
+                        <ui:TextBlock Text="Tu siguiente paciente" Grid.Column="1" FontSize="22" Margin="10,0" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Border>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock Text="{Binding ViewModel.NextPatient.FullName}"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10">
+            <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ui:Button Grid.Column="0" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="Dia"/>
+                    <ui:Button Grid.Column="1" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="Semana"/>
+                    <ui:Button Grid.Column="2" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="Mes"/>
+                    <ui:Button Grid.Column="3" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="3 Meses"/>
+                    <ui:Button Grid.Column="4" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,0,0" Content="Año"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10" Height="150">
+            <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,0,0">
+                <lvc:CartesianChart Series="{Binding SeriesCollection}" />
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,10,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="PersonAdd20" Filled="True" FontSize="40" Margin="10,0,5,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Pacientes" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="10,0,10,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="CheckmarkCircle48" Filled="True" FontSize="40" Margin="10,0,5,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Completadas" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="2" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="10,0,10,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="CommentCheckmark16" Filled="True" FontSize="40" Margin="10,0,5,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Confirmadas" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="3" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="10,0,10,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="ChatWarning24" Filled="True" FontSize="40" Margin="10,0,5,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Pendientes" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="4" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="10,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="DismissCircle48" Filled="True" FontSize="40" Margin="10,0,5,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Canceladas" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
+                </Grid>
+            </Border>
+
+        </Grid>
+        
     </Grid>
 </Page>

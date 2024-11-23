@@ -15,5 +15,7 @@ public partial class SchedulerAddDialog : ContentDialog
         DataContext = this;
 
         InitializeComponent();
+
+        viewModel.CloseDialog = () => this.Hide();
     }
 }

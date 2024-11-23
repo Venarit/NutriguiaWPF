@@ -8,6 +8,8 @@
     xmlns:local="clr-namespace:UiNutriguia.Views.Dialogs"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     mc:Ignorable="d" 
+    d:DataContext="{d:DesignInstance local:SchedulerAddDialog,
+                     IsDesignTimeCreatable=False}"
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     CloseButtonText="Close"
@@ -32,6 +34,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <ui:TextBlock Text="Hora de inicio" Grid.Row="0" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15"/>
@@ -43,14 +46,16 @@
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
-                <ui:NumberBox Grid.Column="0" MaxDecimalPlaces="0" ClearButtonEnabled="False" 
+
+                <ui:NumberBox Grid.Column="0" MaxDecimalPlaces="0" ClearButtonEnabled="False" Maximum="12" Minimum="0"
+                              Value="{Binding ViewModel.StartHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Height="35" VerticalAlignment="Center" MaxLength="2"/>
 
                 <ui:TextBlock Grid.Column="1" Text=":" FontTypography="Subtitle" FontWeight="Light" VerticalAlignment="Center" Margin="5,0"/>
 
-                <ui:NumberBox Grid.Column="2" MaxDecimalPlaces="0" ClearButtonEnabled="False"
-                              Height="35" VerticalAlignment="Center" MaxLength="2"/>
+                <ui:NumberBox Grid.Column="2" MaxDecimalPlaces="0" ClearButtonEnabled="False" Maximum="59" Minimum="0"
+                              Value="{Binding ViewModel.StartMinute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Height="35" VerticalAlignment="Center" MaxLength="2" SmallChange="5"/>
             </Grid>
             
             <ui:TextBlock Text="Hora de fin" Grid.Row="1" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15"/>
@@ -63,33 +68,42 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <ui:NumberBox Grid.Column="0" MaxDecimalPlaces="0" ClearButtonEnabled="False" 
-                  Height="35" VerticalAlignment="Center" MaxLength="2"/>
+                <ui:NumberBox Grid.Column="0" MaxDecimalPlaces="0" ClearButtonEnabled="False" Maximum="24" Minimum="0"
+                              Value="{Binding ViewModel.EndHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Height="35" VerticalAlignment="Center" MaxLength="2"/>
 
                 <ui:TextBlock Grid.Column="1" Text=":" FontTypography="Subtitle" FontWeight="Light" VerticalAlignment="Center" Margin="5,0"/>
 
-                <ui:NumberBox Grid.Column="2" MaxDecimalPlaces="0" ClearButtonEnabled="False"
-                  Height="35" VerticalAlignment="Center" MaxLength="2"/>
+                <ui:NumberBox Grid.Column="2" MaxDecimalPlaces="0" ClearButtonEnabled="False" Maximum="59" Minimum="0"
+                              Value="{Binding ViewModel.EndMinute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Height="35" VerticalAlignment="Center" MaxLength="2" SmallChange="5"/>
             </Grid>
 
             <ui:TextBlock Text="Paciente" Grid.Row="2" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15"/>
-            <ui:AutoSuggestBox Grid.Row="2" Grid.Column="1" PlaceholderText="Paciente" Margin="10,0"
-                   OriginalItemsSource="{Binding ViewModel.Patients, Mode=OneWay}"
-                   Text="{Binding ViewModel.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   DisplayMemberPath="Name"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" 
+                      ItemsSource="{Binding ViewModel.Patients}" 
+                      SelectedItem="{Binding ViewModel.SelectedPatient}" 
+                      DisplayMemberPath="FullName"/>
 
-            <ui:TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" PlaceholderText="Notas" TextWrapping="Wrap"/>
+            <ui:TextBlock Text="Estado" Grid.Row="3" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="15"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" 
+                      ItemsSource="{Binding ViewModel.Statuses}" 
+                      SelectedItem="{Binding ViewModel.SelectedStatus}" 
+                      DisplayMemberPath="Code"/>
+            
+            <ui:TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" PlaceholderText="Notas" TextWrapping="Wrap"
+                        Text="{Binding ViewModel.AppointmentModel.Notes}"/>
 
-            <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+            <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <ui:Button Grid.Column="0" Content="Guardar" Margin="5,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                           />
+                           Command="{Binding ViewModel.SaveAppointmentCommand}"/>
                 <ui:Button Grid.Column="1" Content="Cancelar" Margin="5,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                           />
+                           Command="{Binding ViewModel.CancelCommand}"/>
             </Grid>
         </Grid>
     </Border>

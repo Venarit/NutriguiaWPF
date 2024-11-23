@@ -17,17 +17,10 @@ namespace UiNutriguia.ViewModels.Pages
 
         #region Observables properties
 
-        [ObservableProperty]
-        private IEnumerable<PatientModel> _patients;
-
-        [ObservableProperty]
-        private IEnumerable<ActivityModel> _activities;
-        
-        [ObservableProperty]
-        private IEnumerable<ObjectiveModel> _objectives;
-
-        [ObservableProperty]
-        private IEnumerable<MacronutrientModel> _macronutrients;
+        [ObservableProperty] private IEnumerable<PatientModel> _patients;
+        [ObservableProperty] private IEnumerable<ActivityModel> _activities;
+        [ObservableProperty] private IEnumerable<ObjectiveModel> _objectives;
+        [ObservableProperty] private IEnumerable<MacronutrientModel> _macronutrients;
 
         #endregion
 

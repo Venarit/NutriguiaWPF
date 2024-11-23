@@ -21,7 +21,6 @@ public partial class SchedulerViewModel(INavigationService navigationService, IC
 
     [ObservableProperty] private ObservableCollection<AppointmentModel> _appointments;
     [ObservableProperty] private ObservableCollection<AppointmentStatusModel> _appointmentStatuses;
-    [ObservableProperty] private ObservableCollection<PatientModel> _patients;
     [ObservableProperty] private AppointmentModel _selectedAppointment;
     [ObservableProperty] private ContentPresenter _contentPresenter;
 
@@ -74,9 +73,7 @@ public partial class SchedulerViewModel(INavigationService navigationService, IC
 
         Appointments = new ObservableCollection<AppointmentModel>();
         AppointmentStatuses = new ObservableCollection<AppointmentStatusModel>();
-        Patients = new ObservableCollection<PatientModel>();
 
-        SchedulerAddViewModel = new SchedulerAddViewModel();
 
         FillComboboxes();
 
@@ -92,12 +89,6 @@ public partial class SchedulerViewModel(INavigationService navigationService, IC
             this.AppointmentStatuses.Add(status);
         }
 
-        var patients = this.dataAccess.GetPatients();
-        Patients.Clear();
-        foreach (var patient in patients)
-        {
-            this.Patients.Add(patient);
-        }
     }
 
     public void RefreshAppointments()
@@ -114,16 +105,44 @@ public partial class SchedulerViewModel(INavigationService navigationService, IC
     [RelayCommand] 
     private async Task AddAppointment() 
     {
+        var newAppointment = new AppointmentModel();
+
+        SchedulerAddViewModel = new SchedulerAddViewModel(newAppointment, SelectedDateOnly)
+        {
+            Refresh = () => RefreshAppointments()
+        };
+
         var schedulerAddDialog = new SchedulerAddDialog(dialogService.GetDialogHost(), SchedulerAddViewModel);
 
         _ = await schedulerAddDialog.ShowAsync();
+
     }
 
     [RelayCommand]
-    public void EditAppointment(AppointmentModel selectedAppointment)
+    private async Task EditAppointment(AppointmentModel selectedAppointment)
     {
         if (selectedAppointment != null)
         {
+            var editApp = new AppointmentModel 
+            {
+                IdAppointment = selectedAppointment.IdAppointment,
+                IdPatient = selectedAppointment.IdPatient,
+                IdAppointmentStatus = selectedAppointment.IdAppointmentStatus,
+                StartDateTime = selectedAppointment.StartDateTime,
+                EndDateTime = selectedAppointment.EndDateTime,
+                Notes = selectedAppointment.Notes,
+                AppointmentStatus = selectedAppointment.AppointmentStatus,
+                Patient = selectedAppointment.Patient,
+            };
+
+            SchedulerAddViewModel = new SchedulerAddViewModel(editApp, SelectedDateOnly)
+            {
+                Refresh = () => RefreshAppointments()
+            };
+
+            var schedulerAddDialog = new SchedulerAddDialog(dialogService.GetDialogHost(), SchedulerAddViewModel);
+
+            _ = await schedulerAddDialog.ShowAsync();
         }
     }
 

@@ -82,17 +82,10 @@
                                     </ui:TextBlock>
                                     <Separator Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="2"/>
                                 </Grid>
-                                
-                                <ui:TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" FontWeight="Light" FontSize="20" Margin="0,8">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} {1} {2}">
-                                            <Binding Path="Patient.Name"/>
-                                            <Binding Path="Patient.LastNameP" />
-                                            <Binding Path="Patient.LastNameM" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </ui:TextBlock>
-                                
+
+                                <ui:TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" FontWeight="Light" FontSize="20" Margin="0,8" 
+                                              Text="{Binding Patient.FullName}"/>
+
                                 <ui:TextBlock Text="Estado" Grid.Column="3" Grid.Row="0" FontWeight="Light" FontSize="15" Margin="10,0"/>
                                 
                                 <Border Grid.Row="1" Grid.Column="3" Background="{ui:ThemeResource AccentTextFillColorDisabledBrush}" CornerRadius="8" Visibility="{Binding IsEditing}">

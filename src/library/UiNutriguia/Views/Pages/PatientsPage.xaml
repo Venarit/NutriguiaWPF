@@ -70,15 +70,9 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Margin="12,6,0,0" 
-                                FontWeight="Bold">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} {1} {2}">
-                                        <Binding Path="Name"/>
-                                        <Binding Path="LastNameP" />
-                                        <Binding Path="LastNameM" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
+                                FontWeight="Bold"
+                                Text="{Binding FullName}"/>
+
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="1"

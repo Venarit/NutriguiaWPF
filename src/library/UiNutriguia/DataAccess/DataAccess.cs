@@ -21,6 +21,8 @@ namespace Nutriguia.Model.DataAccess
         private const string SpGetMacronutrients = "[Catalog].[GetMacronutrients]";
         private const string SpGetAppointmentsStatuses = "[Catalog].[GetAppointmentStatuses]";
         private const string SpGetAppointments = "[dbo].[GetAppointments]";
+        private const string SpSetAppointment = "[dbo].[SetAppointment]";
+        private const string SpGetNextAppointments = "[dbo].[GetNextAppointments]";
         #endregion
 
         private SqlConnection connection;
@@ -45,6 +47,9 @@ namespace Nutriguia.Model.DataAccess
         {
             return ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
         }
+
+        #region Dapper
+
         private SqlConnection GetSqlConnection()
         {
             var config = ConfigurationManager.ConnectionStrings["DbConnection"];
@@ -112,6 +117,29 @@ namespace Nutriguia.Model.DataAccess
 
             return result;
         }
+
+        private int ExecuteNonQuery(string sp, object parms, CommandType commandType = CommandType.StoredProcedure)
+        {
+            var returnValue = -1;
+            try
+            {
+                var config = ConfigurationManager.ConnectionStrings["DbConnection"];
+                using (var connection = new SqlConnection(config.ConnectionString))
+                {
+                    connection.Open();
+                    returnValue = connection.ExecuteScalar<int>(sp, parms, commandType: commandType);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+            return returnValue;
+        }
+
+        #endregion
 
         public List<PatientModel> GetPatients()
         {
@@ -221,6 +249,27 @@ namespace Nutriguia.Model.DataAccess
             }
 
             return returnValue.ToList();
+        }
+
+        public int SetAppointment(AppointmentModel model)
+        {
+            var returnValue = this.ExecuteNonQuery(SpSetAppointment, new
+            {
+                @IdAppointment = model.IdAppointment,
+                @IdPatient = model.IdPatient,
+                @IdAppointmentStatus = model.IdAppointmentStatus,
+                @StartDateTime = model.StartDateTime,
+                @EndDateTime = model.EndDateTime,
+                @Notes = model.Notes,
+            });
+
+            return returnValue;
+        }
+
+        public List<AppointmentModel> GetNextAppointments()
+        {
+            var returnValue = this.Query<AppointmentModel>(SpGetNextAppointments, null).ToList();
+            return returnValue;
         }
 
         #region Catalogs
