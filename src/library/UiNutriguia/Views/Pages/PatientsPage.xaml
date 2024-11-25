@@ -33,7 +33,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <ui:Button Grid.Column="0" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5">
+                <ui:Button Grid.Column="0" Command="{Binding ViewModel.AddPatientCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5">
                     <ui:SymbolIcon Symbol="PersonAdd16" />
                 </ui:Button>
                 <ui:AutoSuggestBox PlaceholderText="Buscar Paciente..." Margin="0,5" Grid.Column="1">
@@ -44,7 +44,7 @@
             <ui:ListView 
                 Grid.Column="0"
                 Grid.Row="1"
-                ItemsSource="{Binding ViewModel.Patients, Mode=OneWay}" SelectionChanged="ListView_SelectionChanged">
+                ItemsSource="{Binding ViewModel.Patients, Mode=OneWay}" SelectedItem="{Binding ViewModel.SelectedPatient}" SelectionChanged="ListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:PatientModel}">
                         <Grid Margin="8,0">
@@ -80,7 +80,7 @@
                                 Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
                                 Text="{Binding Email, Mode=OneWay}"/>
                             <ui:Button Grid.Column="2" Grid.RowSpan="2" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6,6"
-                                       Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}">
+                                       Command="{Binding ViewModel.EditPatientCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}">
                                 <ui:SymbolIcon Symbol="Edit20" />
                             </ui:Button>
                         </Grid>
@@ -176,7 +176,8 @@
 
                     </Grid>
 
-                    <ui:Button Grid.Column="1" Grid.Row="0" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddProfilePage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,5" Content="+" />
+                    <ui:Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,5" Content="+" 
+                               Command="{Binding ViewModel.AddProfileCommand}"/>
 
                     <Grid Margin="10,10,5,10" Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
@@ -229,7 +230,8 @@
 
                     </Grid>
 
-                    <ui:Button Grid.Column="1" Grid.Row="1" Command="{Binding ViewModel.GotoPageCommand}" CommandParameter="{x:Type local:PatientsAddPage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,10" Content="+" />
+                    <ui:Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,10,10,10" Content="+" 
+                               Command="{Binding ViewModel.AddMeasurementCommand}"/>
 
                 </Grid>
 

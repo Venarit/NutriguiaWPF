@@ -8,7 +8,7 @@ namespace UiNutriguia.Models
 {
     public class MacronutrientModel : BaseCatalogModel
     {
-        public required int IdMacronutrient { get; set; }
+        public required int IdMacronutrients { get; set; }
         public decimal Hco { get; set; }
         public decimal Lipids { get; set; }
         public decimal Protein { get; set; }

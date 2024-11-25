@@ -22,7 +22,6 @@ public partial class SchedulerViewModel(INavigationService navigationService, IC
     [ObservableProperty] private ObservableCollection<AppointmentModel> _appointments;
     [ObservableProperty] private ObservableCollection<AppointmentStatusModel> _appointmentStatuses;
     [ObservableProperty] private AppointmentModel _selectedAppointment;
-    [ObservableProperty] private ContentPresenter _contentPresenter;
 
     public SchedulerAddViewModel SchedulerAddViewModel { get; set; }
 

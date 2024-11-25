@@ -6,6 +6,7 @@ using System.Configuration;
 using Dapper;
 using System.Windows.Media;
 using static Dapper.SqlMapper;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Nutriguia.Model.DataAccess
 {
@@ -16,6 +17,9 @@ namespace Nutriguia.Model.DataAccess
         private const string SpGetFoodTypes = "[Food].[GetFoodTypes]";
         private const string SpGetFoodUnits = "[Food].[GetFoodUnits]";
         private const string SpGetPatients = "[Patient].[GetPatients]";
+        private const string SpSetPatient = "[Patient].[SetPatient]";
+        private const string SpSetNutritionalProfile = "[Patient].[SetNutritionalProfile]";
+        private const string SpSetPatientMeasurement = "[Patient].[SetPatientMeasurement]";
         private const string SpGetActivities = "[Catalog].[GetActivities]";
         private const string SpGetObjectives = "[Catalog].[GetObjectives]";
         private const string SpGetMacronutrients = "[Catalog].[GetMacronutrients]";
@@ -170,7 +174,7 @@ namespace Nutriguia.Model.DataAccess
                         if (objective != null)
                             profile.Objective = objective;
 
-                        var macronutrient = macronutrients.FirstOrDefault(m => m.IdMacronutrient == profile.IdMacronutrients);
+                        var macronutrient = macronutrients.FirstOrDefault(m => m.IdMacronutrients == profile.IdMacronutrients);
                         if (macronutrient != null)
                             profile.Macronutrient = macronutrient;
                     }
@@ -185,6 +189,49 @@ namespace Nutriguia.Model.DataAccess
             }
 
             return returnValue.ToList();
+        }
+
+        public int SetPatient(PatientModel model)
+        {
+            var returnValue = this.ExecuteNonQuery(SpSetPatient, new
+            {
+                @IdPatient  = model.IdPatient,
+                @Name       = model.Name,
+                @SecondName = model.SecondName,
+                @LastNameP  = model.LastNameP,
+                @LastNameM  = model.LastNameM,
+                @Email      = model.Email,
+                @Cellphone  = model.Cellphone,
+                @BirthDate  = model.BirthDate,
+            });
+            return returnValue;
+        }
+
+        public int SetNutritionalProfile(PatientModel model)
+        {
+            var returnValue = this.ExecuteNonQuery(SpSetNutritionalProfile, new
+            {
+                @IdPatient = model.IdPatient,
+                @Height = model.NutritionalProfile.Height,
+                @Sex = model.NutritionalProfile.Sex,
+                @idActivity = model.NutritionalProfile.Activity.IdActivity,
+                @idObjective = model.NutritionalProfile.Objective.IdObjective,
+                @idMacronutrients = model.NutritionalProfile.Macronutrient.IdMacronutrients,
+            });
+            return returnValue;
+        }
+
+        public int SetPatientMeasurement(PatientModel model)
+        {
+            var returnValue = this.ExecuteNonQuery(SpSetPatientMeasurement, new
+            {
+                @IdNutritionalProfile = model.NutritionalProfile.IdNutritionalProfile,
+                @Weight = model.NutritionalProfile.PatientMeasurement.Weight,
+                @BodyFat = model.NutritionalProfile.PatientMeasurement.BodyFat,
+                @BMR = model.NutritionalProfile.PatientMeasurement.BMR,
+                @TDEE = model.NutritionalProfile.PatientMeasurement.TDEE,
+            });
+            return returnValue;
         }
 
         public List<FoodModel> GetFoods(int? idFoodType, int? idUnit)

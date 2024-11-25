@@ -1,14 +1,17 @@
 ﻿using Nutriguia.Model.DataAccess;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
 using System.Windows.Navigation;
 using UiNutriguia.Models;
+using UiNutriguia.ViewModels.Dialogs;
+using UiNutriguia.Views.Dialogs;
 using UiNutriguia.Views.Pages;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
 namespace UiNutriguia.ViewModels.Pages
 {
-    public partial class PatientsViewModel(INavigationService navigationService) : ObservableObject, INavigationAware
+    public partial class PatientsViewModel(INavigationService navigationService, IContentDialogService dialogService) : ObservableObject, INavigationAware
     {
         private bool _isInitialized = false;
         private ISnackbarService snackbarService;
@@ -17,12 +20,14 @@ namespace UiNutriguia.ViewModels.Pages
 
         #region Observables properties
 
-        [ObservableProperty] private IEnumerable<PatientModel> _patients;
-        [ObservableProperty] private IEnumerable<ActivityModel> _activities;
-        [ObservableProperty] private IEnumerable<ObjectiveModel> _objectives;
-        [ObservableProperty] private IEnumerable<MacronutrientModel> _macronutrients;
+        [ObservableProperty] private ObservableCollection<PatientModel> _patients;
+        [ObservableProperty] private PatientModel _selectedPatient;
 
         #endregion
+
+        public PatientsAddViewModel PatientsAddViewModel { get; set; }
+        public PatientsAddProfileViewModel PatientsAddProfileViewModel { get; set; }
+        public PatientsAddMeasurementViewModel PatientsAddMeasurementViewModel { get; set; }
 
         #region Commands
 
@@ -48,23 +53,6 @@ namespace UiNutriguia.ViewModels.Pages
             //);
         }
 
-        public void AddPatient(PatientModel patient)
-        {
-            try
-            {
-                //this.dataAccess.SetPatients(patient);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error inserting patients: " + ex.Message);
-            }
-        }
-
-        public void AddProfile(NutritionalProfileModel profile)
-        {
-
-        }
-
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
@@ -80,22 +68,97 @@ namespace UiNutriguia.ViewModels.Pages
         {
             this.dataAccess = new DataAccess();
 
-            var patientCollection = new List<PatientModel>();
-            var activityCollection = new List<ActivityModel>();
-            var objectiveCollection = new List<ObjectiveModel>();
-            var macroCollection = new List<MacronutrientModel>();
+            Patients = new ObservableCollection<PatientModel>();
+            RefreshPatients();
 
-            patientCollection = this.dataAccess.GetPatients();
-            activityCollection = this.dataAccess.GetActivities();
-            objectiveCollection = this.dataAccess.GetObjectives();
-            macroCollection = this.dataAccess.GetMacronutrients();
-
-            Patients = patientCollection;
-            Activities = activityCollection;
-            Objectives = objectiveCollection;
-            Macronutrients = macroCollection;
-            
             _isInitialized = true;
+        }
+
+        private void RefreshPatients()
+        {
+            Patients.Clear();
+            var patients = this.dataAccess.GetPatients();
+            foreach (var patient in patients)
+            { 
+                Patients.Add(patient);
+            }
+        }
+
+        [RelayCommand]
+        private async Task AddPatient()
+        {
+            var newPatient = new PatientModel();
+
+            PatientsAddViewModel = new PatientsAddViewModel(newPatient)
+            {
+                Refresh = () => RefreshPatients()
+            };
+
+            var patientsAddDialog = new PatientsAddDialog(dialogService.GetDialogHost(), PatientsAddViewModel);
+
+            _ = await patientsAddDialog.ShowAsync();
+
+        }
+
+        [RelayCommand]
+        private async Task EditPatient(PatientModel selectedPatient)
+        {
+            if (SelectedPatient != null)
+            {
+                var editPatient = SelectedPatient;
+
+                PatientsAddViewModel = new PatientsAddViewModel(editPatient)
+                {
+                    Refresh = () => RefreshPatients()
+                };
+
+                var patientsAddDialog = new PatientsAddDialog(dialogService.GetDialogHost(), PatientsAddViewModel);
+
+                _ = await patientsAddDialog.ShowAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task AddProfile()
+        {
+            if (SelectedPatient != null)
+            {
+                var patient = SelectedPatient;
+
+                PatientsAddProfileViewModel = new PatientsAddProfileViewModel(patient)
+                {
+                    Refresh = () => RefreshPatients()
+                };
+
+                var patientsAddProfileDialog = new PatientsAddProfileDialog(dialogService.GetDialogHost(), PatientsAddProfileViewModel);
+
+                _ = await patientsAddProfileDialog.ShowAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task AddMeasurement()
+        {
+            if (SelectedPatient != null)
+            {
+                if (SelectedPatient.NutritionalProfile != null)
+                {
+                    var patient = SelectedPatient;
+
+                    PatientsAddMeasurementViewModel = new PatientsAddMeasurementViewModel(patient)
+                    {
+                        Refresh = () => RefreshPatients()
+                    };
+
+                    var patientsAddProfileDialog = new PatientsAddMeasurementDialog(dialogService.GetDialogHost(), PatientsAddMeasurementViewModel);
+
+                    _ = await patientsAddProfileDialog.ShowAsync();
+                }
+                else
+                {
+                    //dialog
+                }
+            }
         }
 
     }

@@ -35,4 +35,10 @@
     <Resource Include="Resources\Images\nutriguia.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\Dialogs\PatientsAddMeasurementDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -40,7 +40,7 @@
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.4*" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,10,0">
                 <StackPanel>
@@ -105,12 +105,19 @@
                         <ui:TextBlock Text="Tu siguiente paciente" Grid.Column="1" FontSize="22" Margin="10,0" FontWeight="DemiBold" VerticalAlignment="Center"/>
                     </Grid>
                     <Border>
-                        <Grid>
+                        <Grid Margin="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <ui:TextBlock Text="{Binding ViewModel.NextPatient.FullName}"/>
+                            <ui:TextBlock Grid.Row="0" Text="{Binding ViewModel.NextPatient.FullName}" FontSize="18" HorizontalAlignment="Center"/>
+                            <ui:TextBlock Grid.Row="1" Text="{Binding ViewModel.NextPatient.NutritionalProfile.Activity.Code}" FontSize="18" HorizontalAlignment="Center"/>
+                            <ui:TextBlock Grid.Row="2" Text="{Binding ViewModel.NextPatient.NutritionalProfile.Objective.Code}" FontSize="18" HorizontalAlignment="Center"/>
+                            <ui:TextBlock Grid.Row="3" Text="{Binding ViewModel.NextPatient.NutritionalProfile.Height}" FontSize="18" HorizontalAlignment="Center"/>
+                            <ui:TextBlock Grid.Row="4" Text="{Binding ViewModel.NextPatient.NutritionalProfile.PatientMeasurement.Weight}" FontSize="18" HorizontalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </StackPanel>

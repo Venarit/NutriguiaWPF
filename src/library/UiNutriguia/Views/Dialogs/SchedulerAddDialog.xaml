@@ -47,7 +47,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <ui:NumberBox Grid.Column="0" MaxDecimalPlaces="0" ClearButtonEnabled="False" Maximum="12" Minimum="0"
+                <ui:NumberBox Grid.Column="0" MaxDecimalPlaces="0" ClearButtonEnabled="False" Maximum="24" Minimum="0"
                               Value="{Binding ViewModel.StartHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Height="35" VerticalAlignment="Center" MaxLength="2"/>
 
