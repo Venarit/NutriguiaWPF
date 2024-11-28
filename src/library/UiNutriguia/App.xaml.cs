@@ -69,6 +69,8 @@ namespace UiNutriguia
 
                 services.AddSingleton<DishesPage>();
                 services.AddSingleton<DishesViewModel>();
+                services.AddSingleton<DishesAddPage>();
+                services.AddSingleton<DishesAddViewModel>();
 
                 services.AddSingleton<FoodPage>();
                 services.AddSingleton<FoodViewModel>();

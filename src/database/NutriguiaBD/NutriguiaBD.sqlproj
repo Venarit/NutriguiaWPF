@@ -68,6 +68,7 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="Food\Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Food\Tables\Food.sql" />
@@ -98,5 +99,9 @@
     <Build Include="Catalog\Stored Procedures\GetAppointmentStatuses.sql" />
     <Build Include="Patient\Stored Procedures\SetNutritionalProfile.sql" />
     <Build Include="Patient\Stored Procedures\SetPatientMeasurement.sql" />
+    <Build Include="Food\Tables\Dish.sql" />
+    <Build Include="Food\Tables\DishFood.sql" />
+    <Build Include="Food\Tables\DishType.sql" />
+    <Build Include="Food\Triggers\UpdateDishNutrients.sql" />
   </ItemGroup>
 </Project>

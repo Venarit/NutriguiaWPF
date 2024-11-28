@@ -1,15 +1,36 @@
-﻿CREATE TABLE [dbo].[Cita]
+﻿CREATE TABLE [dbo].[Appointment](
+	[idAppointment] [int] IDENTITY(1,1) NOT NULL,
+	[idPatient] [int] NOT NULL,
+	[idAppointmentStatus] [int] NOT NULL,
+	[StartDateTime] [datetime] NOT NULL,
+	[EndDateTime] [datetime] NOT NULL,
+	[Notes] [text] NULL,
+	[Active] [bit] NOT NULL,
+	[UpdDateTime] [datetimeoffset](7) NOT NULL,
+	[InsDateTime] [datetimeoffset](7) NOT NULL,
+PRIMARY KEY CLUSTERED 
 (
-	[idCita] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[idPaciente] INT NOT NULL,
-	[idEstadoCita] INT NOT NULL DEFAULT(1),
-	[Fecha] DATE NOT NULL,
-	[HoraInicio] TIME NOT NULL,
-	[HoraFin] TIME NOT NULL,
-	[Notas] TEXT NULL,
-	[Activo] BIT NOT NULL DEFAULT(1),
-	[UpdDateTime] DATETIMEOFFSET(7) NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
-	[InsDateTime] DATETIMEOFFSET(7) NOT NULL DEFAULT(SYSDATETIMEOFFSET()),
-	FOREIGN KEY (idPaciente) REFERENCES [Paciente].[Paciente](idPaciente),
-	FOREIGN KEY (idEstadoCita) REFERENCES [Catalogo].[EstadoCita](idEstadoCita)
-)
+	[idAppointment] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Appointment] ADD  DEFAULT ((1)) FOR [idAppointmentStatus]
+GO
+
+ALTER TABLE [dbo].[Appointment] ADD  DEFAULT ((1)) FOR [Active]
+GO
+
+ALTER TABLE [dbo].[Appointment] ADD  DEFAULT (sysdatetimeoffset()) FOR [UpdDateTime]
+GO
+
+ALTER TABLE [dbo].[Appointment] ADD  DEFAULT (sysdatetimeoffset()) FOR [InsDateTime]
+GO
+
+ALTER TABLE [dbo].[Appointment]  WITH CHECK ADD FOREIGN KEY([idAppointmentStatus])
+REFERENCES [Catalog].[AppointmentStatus] ([idAppointmentStatus])
+GO
+
+ALTER TABLE [dbo].[Appointment]  WITH CHECK ADD FOREIGN KEY([idPatient])
+REFERENCES [Patient].[Patient] ([idPatient])
+GO

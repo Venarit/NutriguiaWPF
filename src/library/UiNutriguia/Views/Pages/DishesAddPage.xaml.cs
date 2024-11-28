@@ -3,10 +3,10 @@ using Wpf.Ui.Controls;
 
 namespace UiNutriguia.Views.Pages;
 
-public partial class DishesPage : INavigableView<DishesViewModel>
+public partial class DishesAddPage : INavigableView<DishesAddViewModel>
 {
-    public DishesViewModel ViewModel { get; }
-    public DishesPage(DishesViewModel viewModel)
+    public DishesAddViewModel ViewModel { get; set; }
+    public DishesAddPage(DishesAddViewModel viewModel)
     {
         ViewModel = viewModel;
         DataContext = this;
