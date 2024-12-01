@@ -16,6 +16,8 @@ public class DataAccess
     private const string SpGetDishTypes = "[Food].[GetDishTypes]";
     private const string SpGetDishes = "[Food].[GetDishes]";
     private const string SpGetDishFoods = "[Food].[GetDishFoods]";
+    private const string SpSetDishes = "[Food].[SetDish]";
+    private const string SpdDelDish = "[Food].[DeleteDish]";
     private const string SpGetPatients = "[Patient].[GetPatients]";
     private const string SpSetPatient = "[Patient].[SetPatient]";
     private const string SpSetNutritionalProfile = "[Patient].[SetNutritionalProfile]";
@@ -332,6 +334,48 @@ public class DataAccess
         }
 
         return returnValue.ToList();
+    }
+
+    public int SetDish(DishModel model)
+    {
+        var dataTable = new DataTable();
+        dataTable.Columns.Add("FoodId", typeof(int));
+        dataTable.Columns.Add("Equivalent", typeof(decimal));
+        dataTable.Columns.Add("Quantity", typeof(decimal));
+        dataTable.Columns.Add("Kcal", typeof(int));
+        dataTable.Columns.Add("Protein", typeof(decimal));
+        dataTable.Columns.Add("Lipids", typeof(decimal));
+        dataTable.Columns.Add("Hco", typeof(decimal));
+
+        foreach (var dishFood in model.DishFoodModel)
+        {
+            dataTable.Rows.Add(dishFood.Food.IdFood, dishFood.Equivalent, dishFood.Quantity, dishFood.Kcal, dishFood.Lipids, dishFood.Protein, dishFood.Hco);
+        }
+
+        var returnValue = this.ExecuteNonQuery(SpSetDishes, new
+        {
+            @IdDish = model.IdDish,
+            @IdDishType = model.DishTypeModel.IdDishType,
+            @Code = model.Code,
+            @Name = model.Name,
+            @Description = model.Description,
+            @Kcal = model.Kcal,
+            @Protein = model.Protein,
+            @Lipids = model.Lipids,
+            @Hco = model.Hco,
+            @DishFoods = dataTable
+        });
+
+        return returnValue;
+    }
+
+    public int DeleteDish(int idDish)
+    {
+        var returnValue = this.ExecuteNonQuery(SpdDelDish, new
+        {
+            @IdDish = idDish
+        });
+        return returnValue;
     }
     #endregion
 

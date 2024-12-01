@@ -43,7 +43,7 @@
 
             <ui:NavigationView.ContentOverlay>
                 <Grid>
-                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
+                    <ui:SnackbarPresenter x:Name="SB_Presenter" />
                 </Grid>
             </ui:NavigationView.ContentOverlay>
             

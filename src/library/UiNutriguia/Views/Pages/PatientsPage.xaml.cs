@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Controls;
 using UiNutriguia.Models;
 using UiNutriguia.ViewModels.Pages;

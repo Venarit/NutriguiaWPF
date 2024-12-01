@@ -42,6 +42,8 @@ namespace UiNutriguia
                 // Service containing navigation, same as INavigationWindow... but without window
                 services.AddSingleton<INavigationService, NavigationService>();
 
+                services.AddSingleton<ISnackbarService, SnackbarService>();
+
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
 
                 // Main window with navigation
@@ -60,6 +62,8 @@ namespace UiNutriguia
 
                 services.AddSingleton<PatientsPage>();
                 services.AddSingleton<PatientsViewModel>();
+                services.AddSingleton<PatientProfilePage>();
+                services.AddSingleton<PatientProfileViewModel>();
 
                 services.AddSingleton<MenuPage>();
                 services.AddSingleton<MenuViewModel>();

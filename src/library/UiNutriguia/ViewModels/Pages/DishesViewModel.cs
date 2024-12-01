@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using UiNutriguia.Views.Pages;
+using UiNutriguia.ViewModels.Dialogs;
 
 namespace UiNutriguia.ViewModels.Pages;
 
@@ -17,9 +19,9 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
     private DishTypeModel _selectedDishType;
     private DishModel _selectedDish;
     private string _filterText;
-    private SeriesCollection SeriesCollection;
 
     #region Observable Properties
+    [ObservableProperty] private SeriesCollection _seriesCollection;
     [ObservableProperty] private IEnumerable<DishModel> _dishes;
     [ObservableProperty] private ObservableCollection<DishTypeModel> _dishTypes;
     #endregion
@@ -41,6 +43,7 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
         {
             SetProperty(ref _selectedDish, value);
             GetDishFoods();
+            GetSelectedDishChart();
         }
     }
 
@@ -60,11 +63,22 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
         _ = navigationService.Navigate(type);
     }
 
+    [RelayCommand]
+    private void GotoEdit()
+    {
+        if (SelectedDish != null)
+        {
+            NavigationContext.Parameter = SelectedDish;
+            _ = navigationService.Navigate(typeof(DishesAddPage));
+        }
+    }
+
     public void OnNavigatedTo()
     {
         if (!_isInitialized)
             InitializeViewModel();
     }
+
     public void OnNavigatedFrom()
     {
         _isInitialized = false;
@@ -84,6 +98,13 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
         _isInitialized = true;
     }
 
+    public void Reload()
+    {
+        var dishesList = new List<DishModel>();
+        dishesList = this.dataAccess.GetDishes(null);
+        Dishes = dishesList;
+    }
+    
     public void FillComboBoxes()
     {
         var dishTypes = this.dataAccess.GetDishTypes();
@@ -117,34 +138,48 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
     {
         if (SelectedDish != null)
         {
-            var dishFoods = new List<DishFoodModel>();
-            dishFoods = this.dataAccess.GetDishFoods(SelectedDish.IdDish);
-            SelectedDish.DishFoodModel = dishFoods;
+            SelectedDish.DishFoodModel = new ObservableCollection<DishFoodModel>();
+            var dishFoods = this.dataAccess.GetDishFoods(SelectedDish.IdDish);
+            foreach (var food in dishFoods)
+            {
+                SelectedDish.DishFoodModel.Add(food);
+            }
         }
     }
 
     public void GetSelectedDishChart()
     {
-        SeriesCollection = new SeriesCollection
+        if (SelectedDish != null)
         {
-            new PieSeries
+            SeriesCollection = new SeriesCollection
             {
-                Title = "Carbohidratos",
-                Values = new ChartValues<ObservableValue> { new ObservableValue(8) },
-                DataLabels = true
-            },
-            new PieSeries
-            {
-                Title = "Proteinas",
-                Values = new ChartValues<ObservableValue> { new ObservableValue(6) },
-                DataLabels = true
-            },
-            new PieSeries
-            {
-                Title = "Grasas",
-                Values = new ChartValues<ObservableValue> { new ObservableValue(10) },
-                DataLabels = true
-            }
-        };
+                new PieSeries
+                {
+                    Title = "Carbohidratos",
+                    Values = new ChartValues<ObservableValue> { new ObservableValue((double)SelectedDish.Hco) },
+                    DataLabels = true
+                },
+                new PieSeries
+                {
+                    Title = "Proteinas",
+                    Values = new ChartValues<ObservableValue> { new ObservableValue((double)SelectedDish.Protein) },
+                    DataLabels = true
+                },
+                new PieSeries
+                {
+                    Title = "Grasas",
+                    Values = new ChartValues<ObservableValue> { new ObservableValue((double)SelectedDish.Lipids) },
+                    DataLabels = true
+                }
+            };
+        }
     }
+
+    [RelayCommand]
+    public void DeleteDish()
+    {
+        this.dataAccess.DeleteDish(SelectedDish.IdDish);
+        Reload();
+    }
+
 }

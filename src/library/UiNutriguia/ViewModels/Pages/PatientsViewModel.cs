@@ -36,6 +36,20 @@ namespace UiNutriguia.ViewModels.Pages
         {
             _ = navigationService.Navigate(type);
         }
+
+        [RelayCommand]
+        private void GotoProfilePage()
+        {
+            if (SelectedPatient != null)
+            {
+                NavigationContext.Parameter = SelectedPatient;
+                _ = navigationService.Navigate(typeof(PatientProfilePage));
+            }
+            else
+            {
+                //Dialog please select patient TODO
+            }
+        }
         
         #endregion
 

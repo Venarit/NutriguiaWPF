@@ -1,19 +1,17 @@
-﻿using System.ComponentModel;
-using UiNutriguia.ViewModels.Pages;
+﻿using UiNutriguia.ViewModels.Pages;
 using Wpf.Ui.Controls;
 
-namespace UiNutriguia.Views.Pages
+namespace UiNutriguia.Views.Pages;
+
+public partial class SchedulerPage : INavigableView<SchedulerViewModel>
 {
-    public partial class SchedulerPage : INavigableView<SchedulerViewModel>
+    public SchedulerViewModel ViewModel { get; }
+
+    public SchedulerPage(SchedulerViewModel viewModel)
     {
-        public SchedulerViewModel ViewModel { get; }
+        ViewModel = viewModel;
+        DataContext = this;
 
-        public SchedulerPage(SchedulerViewModel viewModel)
-        {
-            ViewModel = viewModel;
-            DataContext = this;
-
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -13,7 +13,8 @@ namespace UiNutriguia.Views.Windows
             MainWindowViewModel viewModel,
             IPageService pageService,
             INavigationService navigationService,
-            IContentDialogService contentDialogService
+            IContentDialogService contentDialogService,
+            ISnackbarService snackbarService
         )
         {
             ViewModel = viewModel;
@@ -26,6 +27,7 @@ namespace UiNutriguia.Views.Windows
 
             navigationService.SetNavigationControl(RootNavigation);
             contentDialogService.SetDialogHost(RootContentDialog);
+            snackbarService.SetSnackbarPresenter(SB_Presenter);
         }
 
         #region INavigationWindow methods

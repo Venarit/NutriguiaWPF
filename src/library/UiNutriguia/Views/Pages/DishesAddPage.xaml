@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:UiNutriguia.Views.Pages"
       mc:Ignorable="d" 
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:models="clr-namespace:UiNutriguia.Models"
       d:DataContext="{d:DesignInstance local:DishesAddPage,
                IsDesignTimeCreatable=False}"
       d:DesignHeight="450" d:DesignWidth="800"
@@ -20,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <ui:TextBlock Grid.Row="0" Margin="5,0,0,10" Text="Agregar Platillo" FontTypography="Title" />
@@ -34,16 +36,19 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <DockPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0">
-                <ui:TextBlock Text="Nombre: " FontSize="23" FontWeight="Light" Margin="0,0"/>
-                <ui:TextBox Margin="10,0,0,0" />
+                <ui:TextBlock Text="Nombre: " FontSize="18" VerticalAlignment="Center" FontWeight="Light" Margin="0,0"/>
+                <ui:TextBox Margin="10,0,0,0" VerticalAlignment="Center" 
+                            Text="{Binding ViewModel.Dish.Name}"/>
             </DockPanel>
             <DockPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
-                <ui:TextBlock Text="Tipo: " FontSize="23" FontWeight="Light" Margin="0,0"/>
-                <ComboBox ItemsSource="{Binding ViewModel.DishTypes}" DisplayMemberPath="Code"/>
+                <ui:TextBlock Text="Tipo: " FontSize="18" VerticalAlignment="Center" FontWeight="Light" Margin="0,0"/>
+                <ComboBox ItemsSource="{Binding ViewModel.DishTypes}" DisplayMemberPath="Code" VerticalAlignment="Center" 
+                          SelectedItem="{Binding ViewModel.Dish.DishTypeModel}"/>
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,10,0,0">
-                <ui:TextBlock Text="Descripción: " FontSize="23" FontWeight="Light" Margin="0,0"/>
-                <ui:TextBox Margin="10,0,0,0" />
+                <ui:TextBlock Text="Descripción: " FontSize="18" VerticalAlignment="Center" FontWeight="Light" Margin="0,0"/>
+                <ui:TextBox Margin="10,0,0,0" VerticalAlignment="Center" 
+                            Text="{Binding ViewModel.Dish.Description}"/>
             </DockPanel>
         </Grid>
 
@@ -51,24 +56,117 @@
                 Background="{ui:ThemeResource ControlFillColorDefaultBrush}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0">
-                    <ui:Button Grid.Row="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5"
-                               Icon="{ui:SymbolIcon Add28}" FontSize="18" FontWeight="Light" Padding="10">
+                    <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5"
+                               Icon="{ui:SymbolIcon Add28}" FontSize="18" FontWeight="Light" Padding="10"
+                               Command="{Binding ViewModel.AddDishFoodCommand}">
                         <ui:TextBlock Text="Añadir ingrediente" FontSize="20" FontWeight="Light"/>
                     </ui:Button>
-                    <ListView Margin="5,5"
-                              ItemsSource="{Binding ViewModel.Dish.DishFoodModel}" >
+                    <Border Margin="5,5" CornerRadius="5" Padding="5" Background="{ui:ThemeResource ControlFillColorDisabledBrush}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="0.4*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" FontSize="16" Text="Nombre" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" FontSize="16" Text="Equivalente" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" FontSize="16" Text="Cantidad" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" FontSize="16" Text="Unidad" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" FontSize="16" Text="Kcal" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" FontSize="16" Text="Carbohidratos" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="6" FontSize="16" Text="Grasas" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="7" FontSize="16" Text="Proteina" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="8" Text="" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    
+                    <ui:ListView x:Name="lv_DishFood" Margin="5" Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" BorderThickness="0"
+                              ItemsSource="{Binding ViewModel.Dish.DishFoodModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              SelectedItem="{Binding ViewModel.SelectedDishFood, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Page}}"
+                              HorizontalAlignment="Stretch" >
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="{x:Type models:DishFoodModel}">
+                                <Grid HorizontalAlignment="Stretch" PreviewMouseDown="Grid_PreviewMouseDown">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="400"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="0.4*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:AutoSuggestBox Grid.Column="0" Margin="0,0,5,0" DisplayMemberPath="Name" UpdateTextOnSelect="True" TextChanged="AutoSuggestBox_TextChanged"
+                                                       OriginalItemsSource="{Binding ViewModel.Foods, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                       Text="{Binding Food.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ui:NumberBox Grid.Column="1" Value="{Binding Equivalent}" Margin="0,0,5,0"/>
+                                    <ui:TextBox Grid.Column="2" Text="{Binding Quantity, Mode=TwoWay}" IsEnabled="False" Margin="0,0,5,0" />
+                                    <ui:TextBox Grid.Column="3" Text="{Binding Food.Unit.Code, Mode=TwoWay}" IsEnabled="False" Margin="0,0,5,0"/>
+                                    <ui:TextBox Grid.Column="4" Text="{Binding Kcal, Mode=TwoWay}" IsEnabled="False" Margin="0,0,5,0"/>
+                                    <ui:TextBox Grid.Column="5" Text="{Binding Hco, Mode=TwoWay}" IsEnabled="False" Margin="0,0,5,0"/>
+                                    <ui:TextBox Grid.Column="6" Text="{Binding Lipids, Mode=TwoWay}" IsEnabled="False" Margin="0,0,5,0"/>
+                                    <ui:TextBox Grid.Column="7" Text="{Binding Protein, Mode=TwoWay}" IsEnabled="False" Margin="0,0,5,0"/>
+                                    <ui:Button Grid.Column="8" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                               Command="{Binding ViewModel.DeleteDishFoodCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}">
+                                        <ui:SymbolIcon Symbol="Delete48" />
+                                    </ui:Button>
+                                </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                    </ListView>
+                    </ui:ListView>
+
+                    
                 </StackPanel>
+                
+                <Border Grid.Row="1" Margin="5,5" CornerRadius="5" Padding="5" Background="{ui:ThemeResource ControlFillColorDisabledBrush}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0.4*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" FontSize="16" Text="Totales" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="4" Grid.Row="0" FontSize="16" Text="Kcal" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="5" Grid.Row="0" FontSize="16" Text="Carbohidratos" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="6" Grid.Row="0" FontSize="16" Text="Grasas" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="7" Grid.Row="0" FontSize="16" Text="Proteina" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        
+                        <TextBlock Grid.Column="4" Grid.Row="1" FontSize="16" Text="{Binding ViewModel.Dish.Kcal}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="5" Grid.Row="1" FontSize="16" Text="{Binding ViewModel.Dish.Hco}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="6" Grid.Row="1" FontSize="16" Text="{Binding ViewModel.Dish.Lipids}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="7" Grid.Row="1" FontSize="16" Text="{Binding ViewModel.Dish.Protein}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                </Border>
             </Grid>
         </Border>
+        
+        <ui:Button Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5,10"
+                   Icon="{ui:SymbolIcon Save28}" FontSize="15" Padding="25,10" Width="300"
+                   Command="{Binding ViewModel.SaveDishCommand}">
+            <ui:TextBlock Text="Guardar" FontSize="18" FontWeight="Light"/>
+        </ui:Button>
         
     </Grid>
 </Page>

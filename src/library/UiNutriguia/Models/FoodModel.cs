@@ -2,11 +2,17 @@
 
 public class FoodModel : BaseModel
 {
-    public required int IdFood { get; set; }
-    public required int IdFoodType { get; set; }
-    public required string Name { get; set; }
+    public int IdFood { get; set; }
+    public int IdFoodType { get; set; }
+
+    private string _name;
+    public string Name
+    {
+        get => _name;
+        set => SetProperty(ref _name, value);
+    }
     public decimal? Quantity { get; set; }
-    public required int IdUnit { get; set; }
+    public int IdUnit { get; set; }
     public decimal? GrossWeight { get; set; }
     public decimal? NetWeight { get; set; }
     public decimal? Energy { get; set; }
@@ -27,6 +33,6 @@ public class FoodModel : BaseModel
     public decimal? Selenium { get; set; }
     public decimal? Phosphorus { get; set; }
     public decimal? Colesterol { get; set; }
-    public required FoodTypeModel Type { get; set; }
-    public required FoodEguModel Unit { get; set; }
+    public FoodTypeModel Type { get; set; }
+    public FoodEguModel Unit { get; set; }
 }
