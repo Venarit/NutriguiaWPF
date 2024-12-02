@@ -22,6 +22,10 @@ public class DataAccess
     private const string SpSetPatient = "[Patient].[SetPatient]";
     private const string SpSetNutritionalProfile = "[Patient].[SetNutritionalProfile]";
     private const string SpSetPatientMeasurement = "[Patient].[SetPatientMeasurement]";
+    private const string SpGetPatientMeasurements = "[Patient].[GetPatientMeasurements]";
+    private const string SpGetPatientAppointments = "[Patient].[GetPatientAppointments]";
+    private const string SpGetPatientDislikedFoods = "[Patient].[GetPatientDislikedFood]";
+    private const string SpSetPatientDislikedFoods = "[Patient].[SetPatientDislikedFood]";
     private const string SpGetActivities = "[Catalog].[GetActivities]";
     private const string SpGetObjectives = "[Catalog].[GetObjectives]";
     private const string SpGetMacronutrients = "[Catalog].[GetMacronutrients]";
@@ -195,6 +199,38 @@ public class DataAccess
         return returnValue.ToList();
     }
 
+    public List<PatientMeasurementModel> GetPatientMeasurements(int idPatient)
+    {
+        var returnValue = this.Query<PatientMeasurementModel>(SpGetPatientMeasurements, new { @IdPatient = idPatient}).ToList();
+        return returnValue;
+    }
+
+    public List<AppointmentModel> GetPatientAppointments(int idPatient)
+    {
+        List<AppointmentModel> returnValue;
+        using (var connection = this.GetSqlConnection())
+        {
+            using (var multiple = this.QueryMultiple(connection, SpGetPatientAppointments, new { @IdPatient = idPatient }))
+            {
+                returnValue = multiple.Reader.Read<AppointmentModel>().ToList();
+                var statuses = multiple.Reader.Read<AppointmentStatusModel>().ToList();
+                foreach (var appointment in returnValue)
+                {
+                    var status = statuses.FirstOrDefault(u => u.IdAppointmentStatus == appointment.IdAppointmentStatus);
+                    if (status != null)
+                        appointment.AppointmentStatus = status;
+                }
+            }
+        }
+        return returnValue.ToList();
+    }
+
+    public List<FoodModel> GetPatientDislikedFoods(int idPatient)
+    {
+        var returnValue = this.Query<FoodModel>(SpGetPatientDislikedFoods, new { @IdPatient = idPatient }).ToList();
+        return returnValue;
+    }
+
     public int SetPatient(PatientModel model)
     {
         var returnValue = this.ExecuteNonQuery(SpSetPatient, new
@@ -234,6 +270,16 @@ public class DataAccess
             @BodyFat = model.NutritionalProfile.PatientMeasurement.BodyFat,
             @BMR = model.NutritionalProfile.PatientMeasurement.BMR,
             @TDEE = model.NutritionalProfile.PatientMeasurement.TDEE,
+        });
+        return returnValue;
+    }
+
+    public int SetPatientDislikedFood(int idPatient, int idFood)
+    {
+        var returnValue = this.ExecuteNonQuery(SpSetPatientDislikedFoods, new
+        {
+            @IdPatient = idPatient,
+            @IdFood = idFood
         });
         return returnValue;
     }
@@ -379,6 +425,7 @@ public class DataAccess
     }
     #endregion
 
+    #region Appointment
     public List<AppointmentModel> GetAppointments(DateTime date)
     {
         List<AppointmentModel> returnValue;
@@ -425,6 +472,7 @@ public class DataAccess
         var returnValue = this.Query<AppointmentModel>(SpGetNextAppointments, null).ToList();
         return returnValue;
     }
+    #endregion
 
     #region Catalogs
     public List<ActivityModel> GetActivities()

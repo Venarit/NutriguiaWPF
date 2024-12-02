@@ -13,7 +13,7 @@ namespace UiNutriguia.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Home",
+                Content = "Inicio",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
                 TargetPageType = typeof(Views.Pages.DashboardPage)
             },
@@ -28,12 +28,6 @@ namespace UiNutriguia.ViewModels.Windows
                 Content = "Pacientes",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.People24 },
                 TargetPageType = typeof(Views.Pages.PatientsPage)
-            },
-            new NavigationViewItem()
-            {
-                Content = "Menús",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.Food16 },
-                TargetPageType = typeof(Views.Pages.MenuPage)
             },
             new NavigationViewItem()
             {

@@ -107,5 +107,8 @@
     <Build Include="Food\Stored Procedures\SetDish.sql" />
     <Build Include="Food\User Defined Tables\UserDefinedTableType1.sql" />
     <Build Include="Patient\Tables\PatientDislikedFood.sql" />
+    <Build Include="Patient\Stored Procedures\GetPatientMeasurements.sql" />
+    <Build Include="Patient\Stored Procedures\GetPatientAppointments.sql" />
+    <Build Include="Patient\Stored Procedures\GetPatientDislikedFoods.sql" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:UiNutriguia.Views.Pages"
       xmlns:models="clr-namespace:UiNutriguia.Models"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DataContext="{d:DesignInstance local:PatientProfilePage,
                            IsDesignTimeCreatable=False}"
@@ -18,22 +19,255 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" CornerRadius="5">
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" CornerRadius="5">
             <StackPanel>
-                <ui:TextBlock FontTypography="Title" Text="{Binding ViewModel.Patient.FullName}" FontWeight="Thin" Margin="15"/>
-                <Separator/>
+                <ui:TextBlock FontSize="32" Text="{Binding ViewModel.Patient.FullName}" FontWeight="SemiBold" Margin="15"/>
             </StackPanel>
         </Border>
-        <Border Grid.Row="1" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+        
+        <!--Silueta-->
+        <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Margin="0,0,5,5"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <StackPanel HorizontalAlignment="Center">
+                <DockPanel HorizontalAlignment="Center" Margin="5">
+                    <ui:SymbolIcon Symbol="Ruler48" FontSize="24" Margin="0,10,10,0"/>
+                    <TextBlock FontSize="24" FontWeight="Light" Margin="0,10,10,0"
+                               Text="{Binding ViewModel.Patient.NutritionalProfile.Height}"/>
+                    <Label Content="cm" FontSize="24" FontWeight="Light" Margin="0,10,0,0"/>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Center" Margin="5">
+                    <ui:SymbolIcon Symbol="Scales20" FontSize="24" Margin="0,10,10,0"/>
+                    <TextBlock FontSize="24" FontWeight="Light" Margin="0,10,10,0"
+                               Text="{Binding ViewModel.Patient.NutritionalProfile.PatientMeasurement.Weight}"/>
+                    <Label Content="kg" FontSize="24" FontWeight="Light" Margin="0,10,0,0"/>
+                </DockPanel>
+                <Viewbox Margin="20" HorizontalAlignment="Center" Visibility="{Binding ViewModel.MaleVisibility}">
+                    <Canvas Width="480" Height="1000" HorizontalAlignment="Stretch" Margin="5,10">
+                        <Path Data="M287 186.5L284 171.5V156.5L294 140L302 119.5L307 101L310.5 77.5V57L306 38.5L297.5 23L283.5 12L264 2.5L246 1H230.5L212.5 2.5L193 12L179 23L170.5 38.5L166 57V77.5L169.5 101L174.5 119.5L182.5 140L192.5 156.5V171.5L189.5 186.5L179.5 203.5L163 211.5L121 224L102.5 226.5L78 232L63 240.5L48.5 257.5L40 277.5L36.5 298L34 336.5L27 374L20 400.5L15.5 432L13.5 455.5V472.5L15.5 511.5L7.5 527.5L3 547L1 566V593L3 616L7.5 641V685L5 714.5L10.5 741L16.5 763.5L34 786.5L54 803.5H66L68.5 793L54 767.5L48.5 734.5L68.5 763.5H74L71 739L61.5 708.5L46 688L52.5 655.5L58 633L66 598L73 560L75.5 532L73 511.5L89.5 463.5L96 436L98.5 418.5L104 391L116.5 428L125 478V560L110.5 603L106.5 627L103.5 651.5L100.5 698.5L98 739L100.5 813.5L104 849.5L108.5 890L115 920L131.5 978L134 1001.5L131.5 1028.5L125.5 1075V1101.5L131.5 1134.5L140 1174L146.5 1210L152 1250.5L154.5 1272V1299L145 1323.5L139.5 1344L128 1371L132.5 1380L152 1388L202 1393.5L210 1383.5L206.5 1364.5L202 1334.5L196.5 1283.5L199 1257L207.5 1203.5L218.5 1139.5L221.5 1102V1069.5L213 1011.5L218.5 956.5L216 899.5L224 837.5L226.5 790L229 726.5H247.5L250 790L252.5 837.5L260.5 899.5L258 956.5L263.5 1011.5L255 1069.5V1102L258 1139.5L269 1203.5L277.5 1257L280 1283.5L274.5 1334.5L270 1364.5L266.5 1383.5L274.5 1393.5L324.5 1388L344 1380L348.5 1371L337 1344L331.5 1323.5L322 1299V1272L324.5 1250.5L330 1210L336.5 1174L345 1134.5L351 1101.5V1075L345 1028.5L342.5 1001.5L345 978L361.5 920L368 890L372.5 849.5L376 813.5L378.5 739L376 698.5L373 651.5L370 627L366 603L351.5 560V478L360 428L372.5 391L378 418.5L380.5 436L387 463.5L403.5 511.5L401 532L403.5 560L410.5 598L418.5 633L424 655.5L430.5 688L415 708.5L405.5 739L402.5 763.5H408L428 734.5L422.5 767.5L408 793L410.5 803.5H422.5L442.5 786.5L460 763.5L466 741L471.5 714.5L469 685V641L473.5 616L475.5 593V566L473.5 547L469 527.5L461 511.5L463 472.5V455.5L461 432L456.5 400.5L449.5 374L442.5 336.5L440 298L436.5 277.5L428 257.5L413.5 240.5L398.5 232L374 226.5L355.5 224L313.5 211.5L297 203.5L287 186.5Z" 
+                              Fill="Gray" Opacity="0.5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Margin="20" HorizontalAlignment="Center" Visibility="{Binding ViewModel.FemaleVisibility}">
+                    <Canvas Width="380" Height="1000" HorizontalAlignment="Stretch" Margin="5,10">
+                        <Path Data="M197 739L190.75 694.288L184.5 739L181.5 784L180 834V923.5L175 951.5L176.5 984.5L180 1010.5L183.5 1037.5V1100.5L179 1135L172 1200L168 1240.5L166.5 1277L169.5 1302.5L172 1326L178 1356L184 1376.5L176.5 1390L139.5 1388L127.5 1383L124 1369.5L129 1337L131 1285.5L126 1233L122.5 1203.5L116.5 1168.5L108.5 1113L105 1090L103.5 1056L107.5 977L109.5 949L106 906.5L102 874.5L90.5 827L85 802.5L72 737.5L67 692.5V630.5L71.5 598L79 567.5L89 543.5L103 507L104.5 459L99 386L87 366V343.5L81.5 366L79 382.5L73 416.5L70 430.5L67.5 455L62.5 488L60.5 503L57 537.5L48 584L42.5 608.5L38.5 630.5L33 675.5L42.5 690L49.5 705.5L55.5 730V746L48 741L44 727.5L35 713L38.5 746L54 778.5L52.5 784L42.5 781.5L27.5 768L10.5 739L4 714.5L2.5 693.5L0.5 634.5V561L2.5 545.5L9 507L14.5 488L17.5 451.5L19 428L20 410V373L21.5 346.5L24 306.5L32 274.5L44 249.5L66.5 237.5L89 232.5L110 227.5L135 219L148 210L156.5 196.5L159 173.5L145 157.5L135 138L126.5 117L121 99.5L117.5 75.5L121 53L126.5 37L137.5 20.5L152 10L165.5 4L181 0.5H190.5H191H200.5L216 4L229.5 10L244 20.5L255 37L260.5 53L264 75.5L260.5 99.5L255 117L246.5 138L236.5 157.5L222.5 173.5L225 196.5L233.5 210L246.5 219L271.5 227.5L292.5 232.5L315 237.5L337.5 249.5L349.5 274.5L357.5 306.5L360 346.5L361.5 373V410L362.5 428L364 451.5L367 488L372.5 507L379 545.5L381 561V634.5L379 693.5L377.5 714.5L371 739L354 768L339 781.5L329 784L327.5 778.5L343 746L346.5 713L337.5 727.5L333.5 741L326 746V730L332 705.5L339 690L348.5 675.5L343 630.5L339 608.5L333.5 584L324.5 537.5L321 503L319 488L314 455L311.5 430.5L308.5 416.5L302.5 382.5L300 366L294.5 343.5V366L282.5 386L277 459L278.5 507L292.5 543.5L302.5 567.5L310 598L314.5 630.5V692.5L309.5 737.5L296.5 802.5L291 827L279.5 874.5L275.5 906.5L272 949L274 977L278 1056L276.5 1090L273 1113L265 1168.5L259 1203.5L255.5 1233L250.5 1285.5L252.5 1337L257.5 1369.5L254 1383L242 1388L205 1390L197.5 1376.5L203.5 1356L209.5 1326L212 1302.5L215 1277L213.5 1240.5L209.5 1200L202.5 1135L198 1100.5V1037.5L201.5 1010.5L205 984.5L206.5 951.5L201.5 923.5V834L200 784L197 739Z" 
+                              Fill="Gray" Opacity="0.5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Canvas>
+                </Viewbox>
+            </StackPanel>
+        </Border>
+
+        <!--Grafico gauge para grasa corporal-->
+        <Border Grid.Row="4" Grid.Column="0" Margin="0,5,5,0"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <lvc:AngularGauge Value="{Binding ViewModel.Patient.NutritionalProfile.PatientMeasurement.BodyFat}" FromValue="0" ToValue="50" 
+                      LabelsStep="10" TicksStep="1" Wedge="180" Height="250" Width="180" SectionsInnerRadius=".6" Opacity="0.8"
+                      TicksForeground="White" Foreground="White" FontWeight="Bold" FontSize="16" NeedleFill="Gray" >
+                    <lvc:AngularGauge.Sections>
+                        <lvc:AngularSection FromValue="0" ToValue="{Binding ViewModel.LowBodyFat}" Fill="#F8A725"/>
+                        <lvc:AngularSection FromValue="{Binding ViewModel.NormalBodyFat}" ToValue="{Binding ViewModel.HighBodyFat}" Fill="#43e650"/>
+                        <lvc:AngularSection FromValue="{Binding ViewModel.HighBodyFat}" ToValue="{Binding ViewModel.VeryHighBodyFat}" Fill="#ed6c09"/>
+                        <lvc:AngularSection FromValue="{Binding ViewModel.VeryHighBodyFat}" ToValue="50" Fill="#FF3939"/>
+                    </lvc:AngularGauge.Sections>
+                </lvc:AngularGauge>
+                <Grid VerticalAlignment="Bottom" Margin="0,5">
+                    <StackPanel>
+                        <DockPanel Margin="0" HorizontalAlignment="Center">
+                            <TextBlock FontSize="24" FontWeight="Light" 
+                                       Text="{Binding ViewModel.Patient.NutritionalProfile.PatientMeasurement.BodyFat}"/>
+                            <TextBlock FontSize="24" FontWeight="Light" Text=" %"/>
+                        </DockPanel>
+                        <TextBlock FontSize="24" FontWeight="Light" Text="Grasa Corporal" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!--Datos Generales-->
+        <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5,0,5,5"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ui:TextBlock Grid.Row="0" Text="Datos" FontSize="24" FontWeight="Light" Margin="15"/>
+                    <DockPanel Grid.Row="1" Grid.Column="0" Margin="20,0,0,0" HorizontalAlignment="Center">
+                        <ui:SymbolIcon Symbol="PersonRunning20" FontSize="28"/>
+                        <ui:TextBlock Text="{Binding ViewModel.Patient.NutritionalProfile.Activity.Code}" FontSize="24" FontWeight="Light" Margin="15"/>
+                    </DockPanel>
+                    <DockPanel Grid.Row="1" Grid.Column="1" Margin="20,0,0,0" HorizontalAlignment="Center">
+                        <ui:SymbolIcon Symbol="Trophy20" FontSize="28"/>
+                        <ui:TextBlock Text="{Binding ViewModel.Patient.NutritionalProfile.Objective.Code}" FontSize="24" FontWeight="Light" Margin="15"/>
+                    </DockPanel>
+                    <DockPanel Grid.Row="1" Grid.Column="2" Margin="20,0,0,0" HorizontalAlignment="Center">
+                        <ui:SymbolIcon Symbol="AlignSpaceEvenlyHorizontal20" FontSize="28"/>
+                        <ui:TextBlock Text="{Binding ViewModel.Patient.NutritionalProfile.Macronutrient.Code}" FontSize="24" FontWeight="Light" Margin="15"/>
+                    </DockPanel>
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <Separator/>
+                        <DockPanel HorizontalAlignment="Center">
+                            <!--<ui:SymbolIcon Symbol="Fire24" FontSize="24"/>-->
+                            <ui:TextBlock Grid.Row="0" Text="TDEE" FontSize="24" FontWeight="Light" Margin="15" />
+                            <ui:TextBlock Grid.Row="0" Text="{Binding ViewModel.Patient.NutritionalProfile.PatientMeasurement.TDEE}" 
+                                          FontSize="24" FontWeight="Light" Margin="15" HorizontalAlignment="Center"/>
+                        </DockPanel>
+                        <Separator/>
+                    </StackPanel>
+                    <DockPanel Grid.Row="1" Margin="0">
+                        <lvc:PieChart Series="{Binding ViewModel.PieSeriesCollection}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      LegendLocation="Right" InnerRadius="100" Margin="50" Width="500" Height="120">
+                            <lvc:PieChart.ChartLegend>
+                                <lvc:DefaultLegend BulletSize="15"></lvc:DefaultLegend>
+                            </lvc:PieChart.ChartLegend>
+                            <lvc:PieChart.DataTooltip>
+                                <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+                            </lvc:PieChart.DataTooltip>
+                        </lvc:PieChart>
+                    </DockPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!--Comidas a evitar-->
+        <Border Grid.Row="1" Grid.Column="3" Grid.RowSpan="3" Margin="5,0,0,5"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ui:TextBlock Grid.Row="0" Text="Comidas a evitar" FontSize="24" FontWeight="Light"/>
+                <ui:ListView Grid.Row="1" Background="Transparent" BorderBrush="Transparent" Margin="0,10"
+                             ItemsSource="{Binding ViewModel.PatientDislikedFoods}" HorizontalAlignment="Stretch" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:FoodModel}">
+                            <Border Background="{ui:ThemeResource ControlFillColorTertiaryBrush}" CornerRadius="10"
+                                    BorderBrush="Transparent" BorderThickness="1" Width="350" HorizontalAlignment="Center">
+                                <StackPanel Margin="10">
+                                    <DockPanel Margin="0,10" Width="Auto">
+                                        <ui:SymbolIcon Symbol="ChevronCircleRight28" FontSize="18" Margin="0,0,15,0"/>
+                                        <ui:TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Light"/>
+                                        <ui:Button FontSize="15" Margin="5,0,0,0"
+                                                   Command="{Binding ViewModel.DeleteDislikedFoodCommand, RelativeSource={RelativeSource AncestorType=Page}}" CommandParameter="{Binding}">
+                                            <ui:SymbolIcon Symbol="Delete12" Foreground="IndianRed"/>
+                                        </ui:Button>
+                                    </DockPanel>
+                                    <Separator/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ui:ListView>
+                <ui:Button Grid.Row="2" Content="Añadir alimento" HorizontalAlignment="Stretch"
+                           Command="{Binding ViewModel.AddDislikedFoodsCommand}"/>
+            </Grid>
+        </Border>
+
+        <!--Ultima cita-->
+        <Border Grid.Row="3" Grid.Column="1" Margin="5,5,5,5"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <StackPanel Margin="15">
+                <ui:TextBlock Text="Última cita" FontSize="24" FontWeight="Light" Margin="0,0,0,20"/>
+                <ui:TextBlock Text="{Binding ViewModel.PatientLastAppointment.StartDateTime, StringFormat='{}{0:yyyy-MM-dd}'}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <DockPanel HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <ui:TextBlock Text="{Binding ViewModel.PatientLastAppointment.StartDateTime, StringFormat='{}{0:HH:mm}'}" FontSize="20" FontWeight="Light"/>
+                    <ui:TextBlock Text=" - " FontSize="20" FontWeight="Light"/>
+                    <ui:TextBlock Text="{Binding ViewModel.PatientLastAppointment.EndDateTime, StringFormat='{}{0:HH:mm}'}" FontSize="20" FontWeight="Light"/>
+                </DockPanel>
+                <Separator/>
+                <ui:TextBlock FontSize="20" FontWeight="UltraLight" HorizontalAlignment="Center" Margin="0,5"
+                  Text="{Binding ViewModel.PatientLastAppointment.AppointmentStatus.Code}" />
+            </StackPanel>
+        </Border>
+        
+        <!--Siguiente cita-->
+        <Border Grid.Row="3" Grid.Column="2" Margin="5,5,5,5"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <StackPanel Margin="15">
+                <ui:TextBlock Text="Siguiente cita" FontSize="24" FontWeight="Light" Margin="0,0,0,20"/>
+                <ui:TextBlock Text="{Binding ViewModel.PatientNextAppointment.StartDateTime, StringFormat='{}{0:yyyy-MM-dd}'}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <DockPanel HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <ui:TextBlock Text="{Binding ViewModel.PatientNextAppointment.StartDateTime, StringFormat='{}{0:HH:mm}'}" FontSize="20" FontWeight="Light"/>
+                    <ui:TextBlock Text=" - " FontSize="20" FontWeight="Light"/>
+                    <ui:TextBlock Text="{Binding ViewModel.PatientNextAppointment.EndDateTime, StringFormat='{}{0:HH:mm}'}" FontSize="20" FontWeight="Light"/>
+                </DockPanel>
+                <Separator/>
+                <ui:TextBlock FontSize="20" FontWeight="UltraLight" HorizontalAlignment="Center" Margin="0,5"
+                              Text="{Binding ViewModel.PatientNextAppointment.AppointmentStatus.Code}" />
+            </StackPanel>
+        </Border>
+        
+        <!--Grafico peso/grasa-->
+        <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="5,5,5,0"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <lvc:CartesianChart Series="{Binding ViewModel.SeriesCollection}" LegendLocation="Top" Margin="20">
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Valores"/>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="Fecha" Labels="{Binding ViewModel.XAxisLabels}" LabelsRotation="0" />
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
+
+        </Border>
+        
+        <!--Historico Mediciones-->
+        <Border Grid.Row="4" Grid.Column="3" Margin="5,5,0,0"
+                Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+            <StackPanel Margin="15,15">
+                <ui:TextBlock Text="Historico de mediciones" FontSize="18" FontWeight="Light"/>
+                <ui:ListView Background="Transparent" BorderBrush="Transparent" Margin="0,10"
+                          ItemsSource="{Binding ViewModel.PatientMeasurements}" HorizontalAlignment="Stretch" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:PatientMeasurementModel}">
+                            <Border Background="{ui:ThemeResource ControlFillColorTertiaryBrush}" CornerRadius="10"
+                                    BorderBrush="Transparent" BorderThickness="1" Width="350" HorizontalAlignment="Center">
+                                <DockPanel Margin="0,10" Width="Auto">
+                                    <ui:TextBlock Margin="15,10,0,10" Text="{Binding Weight}" FontSize="18" FontWeight="Light"/>
+                                    <ui:TextBlock Margin="0,10,0,10" Text=" kg" FontSize="18" FontWeight="Light"/>
+
+                                    <Separator Margin="10,0"/>
+
+                                    <ui:TextBlock Margin="10,10,0,10" Text="{Binding BodyFat}" FontSize="18" FontWeight="Light"/>
+                                    <ui:TextBlock Margin="0,10,0,10" Text=" %" FontSize="18" FontWeight="Light"/>
+
+                                    <Separator Margin="10,0"/>
+
+                                    <ui:TextBlock FontWeight="Light" Margin="0,10,15,10" Text="{Binding InsDateTime, StringFormat='{}{0:yyyy-MM-dd}'}" FontSize="18"/>
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ui:ListView>
+
+            </StackPanel>
         </Border>
     </Grid>
 </Page>

@@ -39,7 +39,8 @@
             IsBackButtonVisible="Visible"
             IsPaneToggleVisible="True"
             MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
-            PaneDisplayMode="Left">
+            PaneDisplayMode="Left"
+            >
 
             <ui:NavigationView.ContentOverlay>
                 <Grid>
