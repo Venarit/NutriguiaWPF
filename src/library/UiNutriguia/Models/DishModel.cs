@@ -12,8 +12,6 @@ public class DishModel : BaseCatalogModel
     private ObservableCollection<DishFoodModel> _dishFoodModel;
 
     public int IdDish { get; set; }
-    public int IdDishType { get; set; }
-    public DishTypeModel DishTypeModel { get; set; }
 
     public int Kcal
     {

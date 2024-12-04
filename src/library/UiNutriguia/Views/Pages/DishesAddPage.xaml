@@ -29,7 +29,6 @@
         <Grid Grid.Row="1" Margin="5,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -39,11 +38,6 @@
                 <ui:TextBlock Text="Nombre: " FontSize="18" VerticalAlignment="Center" FontWeight="Light" Margin="0,0"/>
                 <ui:TextBox Margin="10,0,0,0" VerticalAlignment="Center" 
                             Text="{Binding ViewModel.Dish.Name}"/>
-            </DockPanel>
-            <DockPanel Grid.Column="1" Grid.Row="0" Margin="5,0,0,0">
-                <ui:TextBlock Text="Tipo: " FontSize="18" VerticalAlignment="Center" FontWeight="Light" Margin="0,0"/>
-                <ComboBox ItemsSource="{Binding ViewModel.DishTypes}" DisplayMemberPath="Code" VerticalAlignment="Center" 
-                          SelectedItem="{Binding ViewModel.Dish.DishTypeModel}"/>
             </DockPanel>
             <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="0,10,0,0">
                 <ui:TextBlock Text="Descripción: " FontSize="18" VerticalAlignment="Center" FontWeight="Light" Margin="0,0"/>
@@ -93,7 +87,7 @@
                     <ui:ListView x:Name="lv_DishFood" Margin="5" Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" BorderThickness="0"
                               ItemsSource="{Binding ViewModel.Dish.DishFoodModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                               SelectedItem="{Binding ViewModel.SelectedDishFood, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Page}}"
-                              HorizontalAlignment="Stretch" >
+                              HorizontalAlignment="Stretch">
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:DishFoodModel}">
                                 <Grid HorizontalAlignment="Stretch" PreviewMouseDown="Grid_PreviewMouseDown">

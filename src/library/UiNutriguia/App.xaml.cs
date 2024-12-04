@@ -70,6 +70,8 @@ namespace UiNutriguia
 
                 services.AddSingleton<PlansPage>();
                 services.AddSingleton<PlansViewModel>();
+                services.AddSingleton<PlansAddPage>();
+                services.AddSingleton<PlansAddViewModel>();
 
                 services.AddSingleton<DishesPage>();
                 services.AddSingleton<DishesViewModel>();

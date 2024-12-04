@@ -1,0 +1,322 @@
+﻿<Page x:Class="UiNutriguia.Views.Pages.PlansAddPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UiNutriguia.Views.Pages"
+      mc:Ignorable="d" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:models="clr-namespace:UiNutriguia.Models"
+      d:DataContext="{d:DesignInstance local:PlansAddPage,
+               IsDesignTimeCreatable=False}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      ScrollViewer.CanContentScroll="False"
+      Title="PlanAddPage">
+
+    <Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--Opcion 1-->
+            <Border Grid.Column="0" Margin="0,0,10,0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,10">
+                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="DemiBold" Text="Opción"/>
+                        <Separator Margin="0,5,0,0"/>
+                    </StackPanel>
+                    
+                    <!--Desayuno-->
+                    <Border Grid.Row="1" Margin="20,10" CornerRadius="5" Background="{ui:ThemeResource SolidBackgroundFillColorTertiaryBrush}" >
+                        <StackPanel>
+                            <Border CornerRadius="5,5,0,0" Height="30" Background="{ui:ThemeResource SolidBackgroundFillColorQuarternaryBrush}" >
+                                <ui:TextBlock Text="Desayuno" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ui:AutoSuggestBox DisplayMemberPath="Name" UpdateTextOnSelect="True"
+                                               OriginalItemsSource="{Binding ViewModel.DishesList}"
+                                               Text="{Binding ViewModel.PlanDishBreakfast, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Grid VerticalAlignment="Stretch" Height="75">
+                                <StackPanel>
+                                    <ui:TextBlock FontSize="25" Margin="0,10,0,2" FontWeight="Light" HorizontalAlignment="Center" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ui:TextBlock FontWeight="Light" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
+                                           Command="{Binding ViewModel.SelectDishCommand}" CommandParameter="{Binding ViewModel.PlanOption.BreakfastModel.Dish}">
+                                </ui:Button>
+                            </Grid>
+                            
+                        </StackPanel>
+                    </Border>
+
+                    <!--Colación 1-->
+                    <Border Grid.Row="2" Margin="20,10" CornerRadius="5" Background="{ui:ThemeResource SolidBackgroundFillColorTertiaryBrush}" >
+                        <StackPanel>
+                            <Border CornerRadius="5,5,0,0" Height="30" Background="{ui:ThemeResource SolidBackgroundFillColorQuarternaryBrush}" >
+                                <ui:TextBlock Text="Colación" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ui:AutoSuggestBox DisplayMemberPath="Name" UpdateTextOnSelect="True"
+                                OriginalItemsSource="{Binding ViewModel.DishesList}"
+                                Text="{Binding ViewModel.PlanDishCollation1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            
+                            <Grid VerticalAlignment="Stretch" Height="75">
+                                <StackPanel>
+                                    <ui:TextBlock FontSize="25" Margin="0,10,0,2" FontWeight="Light" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                    <ui:TextBlock FontWeight="Light" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
+                                    Command="{Binding ViewModel.SelectDishCommand}" CommandParameter="{Binding ViewModel.PlanOption.Collation1Model.Dish}">
+                                </ui:Button>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!--Comida-->
+                    <Border Grid.Row="3" Margin="20,10" CornerRadius="5" Background="{ui:ThemeResource SolidBackgroundFillColorTertiaryBrush}" >
+                        <StackPanel>
+                            <Border CornerRadius="5,5,0,0" Height="30" Background="{ui:ThemeResource SolidBackgroundFillColorQuarternaryBrush}" >
+                                <ui:TextBlock Text="Comida" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ui:AutoSuggestBox DisplayMemberPath="Name" UpdateTextOnSelect="True"
+                                OriginalItemsSource="{Binding ViewModel.DishesList}"
+                                Text="{Binding ViewModel.PlanDishMeal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Grid VerticalAlignment="Stretch" Height="75">
+                                <StackPanel>
+                                    <ui:TextBlock FontSize="25" Margin="0,10,0,2" FontWeight="Light" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                    <ui:TextBlock FontWeight="Light" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
+                                           Command="{Binding ViewModel.SelectDishCommand}" CommandParameter="{Binding ViewModel.PlanOption.MealModel.Dish}">
+                                </ui:Button>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!--Colación 2-->
+                    <Border Grid.Row="4" Margin="20,10" CornerRadius="5" Background="{ui:ThemeResource SolidBackgroundFillColorTertiaryBrush}" >
+                        <StackPanel>
+                            <Border CornerRadius="5,5,0,0" Height="30" Background="{ui:ThemeResource SolidBackgroundFillColorQuarternaryBrush}" >
+                                <ui:TextBlock Text="Colación" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ui:AutoSuggestBox DisplayMemberPath="Name" UpdateTextOnSelect="True"
+                                OriginalItemsSource="{Binding ViewModel.DishesList}"
+                                Text="{Binding ViewModel.PlanDishCollation2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Grid VerticalAlignment="Stretch" Height="75">
+                                <StackPanel>
+                                    <ui:TextBlock FontSize="25" Margin="0,10,0,2" FontWeight="Light" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                    <ui:TextBlock FontWeight="Light" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
+                                           Command="{Binding ViewModel.SelectDishCommand}" CommandParameter="{Binding ViewModel.PlanOption.Collation2Model.Dish}">
+                                </ui:Button>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!--Cena-->
+                    <Border Grid.Row="5" Margin="20,10" CornerRadius="5"  Background="{ui:ThemeResource SolidBackgroundFillColorTertiaryBrush}" >
+                        <StackPanel>
+                            <Border CornerRadius="5,5,0,0" Height="30" Background="{ui:ThemeResource SolidBackgroundFillColorQuarternaryBrush}" >
+                                <ui:TextBlock Text="Cena" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ui:AutoSuggestBox DisplayMemberPath="Name" UpdateTextOnSelect="True"
+                                OriginalItemsSource="{Binding ViewModel.DishesList}"
+                                Text="{Binding ViewModel.PlanDishDinner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            
+                            <Grid VerticalAlignment="Stretch" Height="75">
+                                <StackPanel>
+                                    <ui:TextBlock FontSize="25" Margin="0,10,0,2" FontWeight="Light" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                    <ui:TextBlock FontWeight="Light" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" BorderBrush="Transparent"
+                                    Command="{Binding ViewModel.SelectDishCommand}" CommandParameter="{Binding ViewModel.PlanOption.DinnerModel.Dish}">
+                                </ui:Button>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.8*"/>
+                </Grid.RowDefinitions>
+
+                <!--Ingredientes-->
+                <Border Grid.Column="0" Grid.Row="0" Margin="0,0,10,10" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+                    <StackPanel>
+                        <ui:TextBlock Grid.Row="0" Margin="20,20,0,0" Text="{Binding ViewModel.SelectedDish.Name}" FontWeight="Light" FontSize="28" />
+                        <ui:TextBlock Grid.Row="0" Margin="20,0,0,20" Text="Ingredientes" FontWeight="Light" FontSize="24" />
+                        <ui:ListView x:Name="lv_DishFood" Margin="15,0" Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" BorderThickness="0"
+                            ItemsSource="{Binding ViewModel.SelectedDish.DishFoodModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            SelectedItem="{Binding ViewModel.SelectedDishFood, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Page}}"
+                            HorizontalAlignment="Stretch">
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="{x:Type models:DishFoodModel}">
+                                    <Border Margin="5,1" Background="{ui:ThemeResource SolidBackgroundFillColorSecondaryBrush}" CornerRadius="5" Padding="12">
+                                        <DockPanel HorizontalAlignment="Stretch">
+                                            <ui:TextBlock Grid.Column="1" Text="{Binding Food.Name}" Margin="0,0,5,0" FontSize="16"/>
+                                            <DockPanel HorizontalAlignment="Right">
+                                                <ui:TextBlock Grid.Column="1" Text="{Binding Quantity}" Margin="0,0,5,0" FontSize="16"/>
+                                                <ui:TextBlock Grid.Column="1" Text="{Binding Food.Unit.Code}" Margin="0,0,5,0" FontSize="16"/>
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ui:ListView>
+                    </StackPanel>
+                </Border>
+                
+                <!--Comidas a evitar-->
+                <Border Grid.Column="1" Grid.Row="0" Margin="0,0,10,10" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+                    <StackPanel Margin="10">
+                        <ui:TextBlock Grid.Row="0" Text="Comidas a evitar" FontSize="24" FontWeight="Light" Margin="10"/>
+                        <ui:ListView Grid.Row="1" Background="Transparent" BorderBrush="Transparent" Margin="0,10"
+                                     ItemsSource="{Binding ViewModel.PatientDislikedFoods}" HorizontalAlignment="Stretch" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate DataType="{x:Type models:FoodModel}">
+                                    <Border Background="{ui:ThemeResource ControlFillColorTertiaryBrush}" CornerRadius="10"
+                                            BorderBrush="Transparent" BorderThickness="1" Width="300" HorizontalAlignment="Center">
+                                        <StackPanel Margin="10">
+                                            <DockPanel Margin="0,10" Width="Auto">
+                                                <ui:SymbolIcon Symbol="ChevronCircleRight28" FontSize="18" Margin="0,0,15,0"/>
+                                                <ui:TextBlock Text="{Binding Name}" FontSize="18" FontWeight="Light"/>
+                                            </DockPanel>
+                                            <Separator/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ui:ListView>
+                    </StackPanel>
+                </Border>
+                
+                <!--Totales-->
+                <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,10,0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="5">
+                    <StackPanel Margin="0,15">
+                        <ui:TextBlock Grid.Row="0" Margin="20,0,0,15" Text="Totales" FontWeight="Light" FontSize="24" />
+
+                        <Grid Margin="25,0,25,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <ui:TextBlock Grid.Column="0" Grid.Row="0" Text="Platillo" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <ui:TextBlock Grid.Column="1" Grid.Row="0" Text="Kcal" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="0" Text="Carbohidratos" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="0" Text="Proteina" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="0" Text="Lipidos" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold"/>
+                            
+                            <Separator Grid.Row="1" Grid.ColumnSpan="5"/>
+                            <Separator Grid.Row="2" Grid.ColumnSpan="5"/>
+                            <Separator Grid.Row="3" Grid.ColumnSpan="5"/>
+                            <Separator Grid.Row="4" Grid.ColumnSpan="5"/>
+                            <Separator Grid.Row="5" Grid.ColumnSpan="5"/>
+                            <Separator Grid.Row="6" Grid.ColumnSpan="5"/>
+                            <Separator Grid.Row="7" Grid.ColumnSpan="5"/>
+
+                            <ui:TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Name}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Name}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Name}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="0" Grid.Row="4" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Name}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="0" Grid.Row="5" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Name}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+
+                            <ui:TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Kcal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Kcal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Kcal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Kcal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Kcal}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+
+                            <ui:TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Hco}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Hco}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Hco}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="4" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Hco}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Hco}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+
+                            <ui:TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Protein}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="2" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Protein}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Protein}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="4" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Protein}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="5" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Protein}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+
+                            <ui:TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding ViewModel.PlanOption.BreakfastModel.Dish.Lipids}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="2" Text="{Binding ViewModel.PlanOption.Collation1Model.Dish.Lipids}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="3" Text="{Binding ViewModel.PlanOption.MealModel.Dish.Lipids}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="4" Text="{Binding ViewModel.PlanOption.Collation2Model.Dish.Lipids}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="5" Text="{Binding ViewModel.PlanOption.DinnerModel.Dish.Lipids}" FontSize="14" HorizontalAlignment="Center" Margin="0,10"/>
+
+                            <ui:TextBlock Grid.Column="0" Grid.Row="6" Text="Total" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="0" Grid.Row="7" Text="Ideal" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+
+                            <ui:TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding ViewModel.PlanOption.Kcal, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding ViewModel.PlanOption.Hco, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="6" Text="{Binding ViewModel.PlanOption.Protein, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="6" Text="{Binding ViewModel.PlanOption.Lipids, UpdateSourceTrigger=PropertyChanged}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+
+                            <ui:TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding ViewModel.Patient.NutritionalProfile.PatientMeasurement.TDEE}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="2" Grid.Row="7" Text="{Binding ViewModel.PatientHco}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="3" Grid.Row="7" Text="{Binding ViewModel.PatientProtein}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+                            <ui:TextBlock Grid.Column="4" Grid.Row="7" Text="{Binding ViewModel.PatientLipids}" FontSize="15" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,15"/>
+
+                        </Grid>
+                        
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,15,0,0">
+                <ui:Button HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" Content="Añadir"
+                    Command="{Binding ViewModel.SaveCommand}"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</Page>

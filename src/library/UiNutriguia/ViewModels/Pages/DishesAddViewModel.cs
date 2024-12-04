@@ -1,10 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Nutriguia.Model.DataAccess;
 using System.Collections.ObjectModel;
-using System.Security.Cryptography;
-using System.Windows.Navigation;
 using UiNutriguia.Models;
-using UiNutriguia.Views.Pages;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
@@ -18,7 +15,6 @@ public partial class DishesAddViewModel(INavigationService navigationService) : 
 
     [ObservableProperty] private IEnumerable<FoodModel> _foods;
     [ObservableProperty] private DishModel _dish;
-    [ObservableProperty] private ObservableCollection<DishTypeModel> _dishTypes;
 
     public DishFoodModel SelectedDishFood
     {
@@ -64,23 +60,7 @@ public partial class DishesAddViewModel(INavigationService navigationService) : 
         foodCollection = this.dataAccess.GetFoods(null, null);
         Foods = foodCollection;
 
-        this.DishTypes = new ObservableCollection<DishTypeModel>();
-
-
-        FillComboBoxes();
-
         _isInitialized = true;
-    }
-
-    private void FillComboBoxes()
-    {
-        var dishTypes = this.dataAccess.GetDishTypes();
-        this.DishTypes.Clear();
-        this.DishTypes.Add(new DishTypeModel { IdDishType = 0, Code = " " });
-        foreach (var type in dishTypes)
-        {
-            this.DishTypes.Add(type);
-        }
     }
 
     [RelayCommand]

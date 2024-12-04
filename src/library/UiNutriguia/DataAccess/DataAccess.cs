@@ -33,6 +33,9 @@ public class DataAccess
     private const string SpGetAppointments = "[dbo].[GetAppointments]";
     private const string SpSetAppointment = "[dbo].[SetAppointment]";
     private const string SpGetNextAppointments = "[dbo].[GetNextAppointments]";
+    private const string SpGetPlanPatient = "[NutritionalPlan].[GetPlanPatient]";
+    private const string SpsetPlan = "[NutritionalPlan].[SetPlan]";
+
     #endregion
 
     private SqlConnection connection;
@@ -325,26 +328,10 @@ public class DataAccess
         return returnValue;
     }
 
-    public List<DishModel> GetDishes(int? idDishType)
+    public List<DishModel> GetDishes()
     {
-        List<DishModel> returnValue;
-        using (var connection = this.GetSqlConnection())
-        {
-            using (var multiple = this.QueryMultiple(connection, SpGetDishes, new { @IdDishType = idDishType }))
-            {
-                returnValue = multiple.Reader.Read<DishModel>().ToList();
-                var types = multiple.Reader.Read<DishTypeModel>().ToList();
-                foreach (var dish in returnValue)
-                {
-                    var type = types.FirstOrDefault(t => t.IdDishType == dish.IdDishType);
-                    if (type != null)
-                        dish.DishTypeModel = type;
-
-                }
-            }
-        }
-
-        return returnValue.ToList();
+        var returnValue = this.Query<DishModel>(SpGetDishes, null).ToList();
+        return returnValue;
     }
 
     public List<DishFoodModel> GetDishFoods(int idDish)
@@ -401,7 +388,6 @@ public class DataAccess
         var returnValue = this.ExecuteNonQuery(SpSetDishes, new
         {
             @IdDish = model.IdDish,
-            @IdDishType = model.DishTypeModel.IdDishType,
             @Code = model.Code,
             @Name = model.Name,
             @Description = model.Description,
@@ -472,6 +458,98 @@ public class DataAccess
         var returnValue = this.Query<AppointmentModel>(SpGetNextAppointments, null).ToList();
         return returnValue;
     }
+    #endregion
+
+    #region Nutritional Plan
+    public List<PlanPatientModel> GetPlanPatient(int idPatient)
+    {
+        List<PlanPatientModel> returnValue;
+        using (var connection = this.GetSqlConnection())
+        {
+            using (var multiple = this.QueryMultiple(connection, SpGetPlanPatient, new { @IdPatient = idPatient }))
+            {
+                returnValue = multiple.Reader.Read<PlanPatientModel>().ToList();
+                var plans = multiple.Reader.Read<PlanModel>().ToList();
+                var planOptions = multiple.Reader.Read<PlanOptionModel>().ToList();
+                var planDishes = multiple.Reader.Read<PlanDishModel>().ToList();
+                var dishes = GetDishes();
+
+                foreach (var planDish in planDishes)
+                {
+                    var dish = dishes.FirstOrDefault(d => d.IdDish == planDish.IdDish);
+                    if (dish != null)
+                        planDish.Dish = dish;
+                }
+                
+                foreach (var planOption in planOptions)
+                {
+                    var breakfast = planDishes.FirstOrDefault(d => d.IdPlanDish == planOption.Breakfast);
+                    if (breakfast != null)
+                        planOption.BreakfastModel = breakfast;
+
+                    var col1 = planDishes.FirstOrDefault(d => d.IdPlanDish == planOption.Collation1);
+                    if (col1 != null)
+                        planOption.Collation1Model = col1;
+
+                    var meal = planDishes.FirstOrDefault(d => d.IdPlanDish == planOption.Meal);
+                    if (meal != null)
+                        planOption.MealModel = meal;
+
+                    var col2 = planDishes.FirstOrDefault(d => d.IdPlanDish == planOption.Collation2);
+                    if (col2 != null)
+                        planOption.Collation2Model = col2;
+
+                    var dinner = planDishes.FirstOrDefault(d => d.IdPlanDish == planOption.Dinner);
+                    if (dinner != null)
+                        planOption.DinnerModel = dinner;
+                }
+
+                foreach (var plan in plans)
+                {
+                    var opt1 = planOptions.FirstOrDefault(p => p.IdPlanOption == plan.IdPlanOption_1);
+                    if (opt1 != null)
+                        plan.PlanOptionModel1 = opt1;
+
+                    var opt2 = planOptions.FirstOrDefault(p => p.IdPlanOption == plan.IdPlanOption_2);
+                    if (opt2 != null)
+                        plan.PlanOptionModel2 = opt2;
+
+                    var opt3 = planOptions.FirstOrDefault(p => p.IdPlanOption == plan.IdPlanOption_3);
+                    if (opt3 != null)
+                        plan.PlanOptionModel3 = opt3;
+                }
+
+                foreach (var planPatient in returnValue)
+                {
+                    var plan = plans.FirstOrDefault(p => p.IdPlan == planPatient.IdPlan);
+                    if (plan != null)
+                        planPatient.PlanModel = plan;
+                }
+            }
+        }
+        return returnValue.ToList();
+    }
+
+    public int SetPlanOption1(PlanOptionModel model, int idPatient, int idPlan)
+    {
+        var returnValue = this.ExecuteNonQuery(SpsetPlan, new
+        {
+            @IdPlan             = idPlan,
+            @IdPatient          = idPatient,
+            @IdDishBreakfast    = model.BreakfastModel.Dish.IdDish,
+            @IdDishCollation1   = model.Collation1Model.Dish.IdDish,
+            @IdDishMeal         = model.MealModel.Dish.IdDish,
+            @IdDishCollation2   = model.Collation2Model.Dish.IdDish,
+            @IdDishDinner       = model.DinnerModel.Dish.IdDish,
+            @Kcal               = model.Kcal,
+            @Protein            = model.Protein,
+            @Lipids             = model.Lipids,
+            @Hco                = model.Hco
+        });
+        return returnValue;
+    }
+
+
     #endregion
 
     #region Catalogs

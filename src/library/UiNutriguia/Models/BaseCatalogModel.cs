@@ -9,7 +9,21 @@ namespace UiNutriguia.Models
     public class BaseCatalogModel : BaseModel
     {
         public string Code { get; set; }
-        public string? Name { get; set; }
-        public string? Description { get; set; }
+
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
     }
 }

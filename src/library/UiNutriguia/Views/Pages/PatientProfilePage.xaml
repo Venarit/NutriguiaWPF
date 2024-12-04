@@ -139,17 +139,15 @@
                         </DockPanel>
                         <Separator/>
                     </StackPanel>
-                    <DockPanel Grid.Row="1" Margin="0">
-                        <lvc:PieChart Series="{Binding ViewModel.PieSeriesCollection}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      LegendLocation="Right" InnerRadius="100" Margin="50" Width="500" Height="120">
-                            <lvc:PieChart.ChartLegend>
-                                <lvc:DefaultLegend BulletSize="15"></lvc:DefaultLegend>
-                            </lvc:PieChart.ChartLegend>
-                            <lvc:PieChart.DataTooltip>
-                                <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
-                            </lvc:PieChart.DataTooltip>
-                        </lvc:PieChart>
-                    </DockPanel>
+                    <lvc:PieChart Series="{Binding ViewModel.PieSeriesCollection}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Grid.Row="1" LegendLocation="Right" InnerRadius="0" Margin="20" Width="400" Height="180">
+                        <lvc:PieChart.ChartLegend>
+                            <lvc:DefaultLegend BulletSize="15"></lvc:DefaultLegend>
+                        </lvc:PieChart.ChartLegend>
+                        <lvc:PieChart.DataTooltip>
+                            <lvc:DefaultTooltip BulletSize="20"></lvc:DefaultTooltip>
+                        </lvc:PieChart.DataTooltip>
+                    </lvc:PieChart>
                 </Grid>
             </StackPanel>
         </Border>

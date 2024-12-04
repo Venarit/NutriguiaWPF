@@ -3,12 +3,10 @@ using Wpf.Ui.Controls;
 using Wpf.Ui;
 using UiNutriguia.Models;
 using System.Collections.ObjectModel;
-using System.Security.Cryptography;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using UiNutriguia.Views.Pages;
-using UiNutriguia.ViewModels.Dialogs;
 
 namespace UiNutriguia.ViewModels.Pages;
 
@@ -89,7 +87,7 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
         this.dataAccess = new DataAccess();
 
         var dishesList = new List<DishModel>();
-        dishesList = this.dataAccess.GetDishes(null);
+        dishesList = this.dataAccess.GetDishes();
         Dishes = dishesList;
 
         this.DishTypes = new ObservableCollection<DishTypeModel>();
@@ -101,28 +99,27 @@ public partial class DishesViewModel(INavigationService navigationService) : Obs
     public void Reload()
     {
         var dishesList = new List<DishModel>();
-        dishesList = this.dataAccess.GetDishes(null);
+        dishesList = this.dataAccess.GetDishes();
         Dishes = dishesList;
     }
     
     public void FillComboBoxes()
     {
-        var dishTypes = this.dataAccess.GetDishTypes();
-        this.DishTypes.Clear();
-        this.DishTypes.Add(new DishTypeModel { IdDishType = 0, Code = " " });
-        foreach (var type in dishTypes)
-        {
-            this.DishTypes.Add(type);
-        }
+        //var dishTypes = this.dataAccess.GetDishTypes();
+        //this.DishTypes.Clear();
+        //this.DishTypes.Add(new DishTypeModel { IdDishType = 0, Code = " " });
+        //foreach (var type in dishTypes)
+        //{
+        //    this.DishTypes.Add(type);
+        //}
     }
 
     public void ApplyFilter()
     {
         var dishesList = new List<DishModel>();
 
-        var dishTypeId = SelectedDishType?.IdDishType;
 
-        dishesList = this.dataAccess.GetDishes(dishTypeId == 0 ? null : dishTypeId);
+        dishesList = this.dataAccess.GetDishes();
 
         if (!string.IsNullOrEmpty(FilterText))
         {

@@ -47,7 +47,7 @@
                 <StackPanel Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="0" Margin="10,5">
                     <Label Content="Grasa corporal (%)" />
                     <ui:NumberBox MaxLength="4" Minimum="0" 
-                                  Value="{Binding ViewModel.PatientMeasurement.Bodyfat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  Value="{Binding ViewModel.PatientMeasurement.BodyFat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <StackPanel Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="1" Margin="10,5">
