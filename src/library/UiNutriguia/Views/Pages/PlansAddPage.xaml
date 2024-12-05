@@ -182,7 +182,7 @@
                         <ui:ListView x:Name="lv_DishFood" Margin="15,0" Background="{ui:ThemeResource ControlFillColorSecondaryBrush}" BorderThickness="0"
                             ItemsSource="{Binding ViewModel.SelectedDish.DishFoodModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             SelectedItem="{Binding ViewModel.SelectedDishFood, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Page}}"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
                             <ListView.ItemTemplate>
                                 <DataTemplate DataType="{x:Type models:DishFoodModel}">
                                     <Border Margin="5,1" Background="{ui:ThemeResource SolidBackgroundFillColorSecondaryBrush}" CornerRadius="5" Padding="12">

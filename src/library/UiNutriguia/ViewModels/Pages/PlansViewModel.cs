@@ -63,8 +63,13 @@ public partial class PlansViewModel(INavigationService navigationService) : Obse
     {
         if (PlanPatient != null && SelectedPatient != null)
         {
-            NavigationContext.Parameter = SelectedPatient;
-            _ = navigationService.Navigate(typeof(PlansAddPage));
+            if (PlanPatient.PlanModel.PlanOptionModel1 == null || PlanPatient.PlanModel.PlanOptionModel2 == null
+                || PlanPatient.PlanModel.PlanOptionModel3 == null)
+            {
+                NavigationContext.Parameter = SelectedPatient;
+                NavigationContext.Parameter2 = PlanPatient.IdPlan;
+                _ = navigationService.Navigate(typeof(PlansAddPage));
+            }
         }
     }
 
@@ -103,6 +108,8 @@ public partial class PlansViewModel(INavigationService navigationService) : Obse
     {
         this.dataAccess = new DataAccess();
 
+        SelectedPatient = new PatientModel();
+
         Patients = new List<PatientModel>();
         Patients = this.dataAccess.GetPatients();
 
@@ -130,7 +137,13 @@ public partial class PlansViewModel(INavigationService navigationService) : Obse
 
             var planPatients = this.dataAccess.GetPlanPatient(SelectedPatient.IdPatient);
             if (planPatients.Any())
+            {
                 PlanPatient = planPatients.First();
+            }
+            else
+            {
+                PlanPatient = null;
+            }
 
             if (PlanPatient != null)
             {

@@ -31,12 +31,12 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <ui:TextBlock Grid.Row="0" FontTypography="TitleLarge" Text="{Binding ViewModel.Greeting}"/>
-
+        
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -113,17 +113,30 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <ui:TextBlock Grid.Row="0" Text="{Binding ViewModel.NextPatient.FullName}" FontSize="18" HorizontalAlignment="Center"/>
-                            <ui:TextBlock Grid.Row="1" Text="{Binding ViewModel.NextPatient.NutritionalProfile.Activity.Code}" FontSize="18" HorizontalAlignment="Center"/>
-                            <ui:TextBlock Grid.Row="2" Text="{Binding ViewModel.NextPatient.NutritionalProfile.Objective.Code}" FontSize="18" HorizontalAlignment="Center"/>
-                            <ui:TextBlock Grid.Row="3" Text="{Binding ViewModel.NextPatient.NutritionalProfile.Height}" FontSize="18" HorizontalAlignment="Center"/>
-                            <ui:TextBlock Grid.Row="4" Text="{Binding ViewModel.NextPatient.NutritionalProfile.PatientMeasurement.Weight}" FontSize="18" HorizontalAlignment="Center"/>
+                            <ui:TextBlock Grid.Row="0" Text="{Binding ViewModel.NextPatient.FullName}" FontSize="22" HorizontalAlignment="Center"/>
+                            <DockPanel Grid.Row="1" Margin="10" HorizontalAlignment="Center">
+                                <ui:SymbolIcon Symbol="PersonRunning20" FontSize="20" Margin="0,0,10,0"/>
+                                <ui:TextBlock Text="{Binding ViewModel.NextPatient.NutritionalProfile.Activity.Code}" FontSize="20"/>
+                            </DockPanel>
+                            <DockPanel Grid.Row="2" Margin="10" HorizontalAlignment="Center">
+                                <ui:SymbolIcon Symbol="Fire16" FontSize="20" Margin="0,0,10,0"/>
+                                <ui:TextBlock Text="{Binding ViewModel.NextPatient.NutritionalProfile.Objective.Code}" FontSize="18" HorizontalAlignment="Center"/>
+                            </DockPanel>
+                            <DockPanel Grid.Row="3" Margin="10" HorizontalAlignment="Center">
+                                <ui:TextBlock Text="{Binding ViewModel.NextPatient.NutritionalProfile.Height}" FontSize="18" HorizontalAlignment="Center"/>
+                                <ui:TextBlock Text="cm" FontSize="18" HorizontalAlignment="Center"/>
+                            </DockPanel>
+                            <DockPanel Grid.Row="4" Margin="10" HorizontalAlignment="Center">
+                                <ui:TextBlock Text="{Binding ViewModel.NextPatient.NutritionalProfile.PatientMeasurement.Weight}" FontSize="18" HorizontalAlignment="Center"/>
+                                <ui:TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
+                            </DockPanel>
                         </Grid>
                     </Border>
                 </StackPanel>
             </Border>
         </Grid>
 
+        <!--Botones filtro-->
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10">
             <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,0,0">
                 <Grid>
@@ -134,21 +147,30 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <ui:Button Grid.Column="0" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="Dia"/>
-                    <ui:Button Grid.Column="1" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="Semana"/>
-                    <ui:Button Grid.Column="2" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="Mes"/>
-                    <ui:Button Grid.Column="3" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Content="3 Meses"/>
-                    <ui:Button Grid.Column="4" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,0,0" Content="Año"/>
+                    <ui:Button Grid.Column="0" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Command="{Binding ViewModel.GetDayAppointmentsCommand}" Content="Dia"/>
+                    <ui:Button Grid.Column="1" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Command="{Binding ViewModel.GetWeekAppointmentsCommand}" Content="Semana"/>
+                    <ui:Button Grid.Column="2" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Command="{Binding ViewModel.GetMonthAppointmentsCommand}" Content="Mes"/>
+                    <ui:Button Grid.Column="3" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,5,0" Command="{Binding ViewModel.Get3MonthAppointmentsCommand}" Content="3 Meses"/>
+                    <ui:Button Grid.Column="4" HorizontalAlignment="Stretch" Appearance="Secondary" Margin="0,0,0,0" Command="{Binding ViewModel.GetYearAppointmentsCommand}" Content="Año"/>
                 </Grid>
             </Border>
         </Grid>
 
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10" Height="150">
+        <!--Gráfico citas-->
+        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10" Height="280">
             <Border Grid.Column="0" Background="{ui:ThemeResource SolidBackgroundFillColorBaseBrush}" CornerRadius="10" Margin="0,0,0,0">
-                <lvc:CartesianChart Series="{Binding SeriesCollection}" />
+                <lvc:CartesianChart Series="{Binding ViewModel.SeriesCollection}" LegendLocation="Right">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Fecha" Labels="{Binding ViewModel.Labels}"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Citas" LabelFormatter="{Binding ViewModel.Formatter}"/>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
             </Border>
         </Grid>
 
+        <!--Numeros citas-->
         <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -169,7 +191,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="PersonAdd20" Filled="True" FontSize="40" Margin="10,0,5,0"/>
-                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ViewModel.TotalPatients, UpdateSourceTrigger=PropertyChanged}" FontSize="34" Margin="5,10,0,0"/>
                     <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Pacientes" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
                 </Grid>
             </Border>
@@ -185,7 +207,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="CheckmarkCircle48" Filled="True" FontSize="40" Margin="10,0,5,0"/>
-                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ViewModel.TotalCompleted, UpdateSourceTrigger=PropertyChanged}" FontSize="34" Margin="5,10,0,0"/>
                     <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Completadas" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
                 </Grid>
             </Border>
@@ -201,7 +223,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="CommentCheckmark16" Filled="True" FontSize="40" Margin="10,0,5,0"/>
-                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ViewModel.TotalConfirmed, UpdateSourceTrigger=PropertyChanged}" FontSize="34" Margin="5,10,0,0"/>
                     <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Confirmadas" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
                 </Grid>
             </Border>
@@ -217,7 +239,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="ChatWarning24" Filled="True" FontSize="40" Margin="10,0,5,0"/>
-                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ViewModel.TotalPending, UpdateSourceTrigger=PropertyChanged}" FontSize="34" Margin="5,10,0,0"/>
                     <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Pendientes" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
                 </Grid>
             </Border>
@@ -233,7 +255,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <ui:SymbolIcon Grid.RowSpan="2" Grid.Row="0" Grid.Column="0" Symbol="DismissCircle48" Filled="True" FontSize="40" Margin="10,0,5,0"/>
-                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="28" FontSize="34" Margin="5,10,0,0"/>
+                    <ui:TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ViewModel.TotalCancelled, UpdateSourceTrigger=PropertyChanged}" FontSize="34" Margin="5,10,0,0"/>
                     <ui:TextBlock Grid.Row="1" Grid.Column="1" Text="Canceladas" FontSize="18" Margin="5,0,0,15" FontWeight="Light"/>
                 </Grid>
             </Border>

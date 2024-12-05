@@ -31,6 +31,7 @@ public class DataAccess
     private const string SpGetMacronutrients = "[Catalog].[GetMacronutrients]";
     private const string SpGetAppointmentsStatuses = "[Catalog].[GetAppointmentStatuses]";
     private const string SpGetAppointments = "[dbo].[GetAppointments]";
+    private const string SpGetAppointmentHistory = "[dbo].[GetAppointmentHistory]";
     private const string SpSetAppointment = "[dbo].[SetAppointment]";
     private const string SpGetNextAppointments = "[dbo].[GetNextAppointments]";
     private const string SpGetPlanPatient = "[NutritionalPlan].[GetPlanPatient]";
@@ -458,6 +459,32 @@ public class DataAccess
         var returnValue = this.Query<AppointmentModel>(SpGetNextAppointments, null).ToList();
         return returnValue;
     }
+
+    public List<AppointmentModel> GetAppointmentHistory(DateTime startDate, DateTime endDate)
+    {
+        List<AppointmentModel> returnValue;
+        using (var connection = this.GetSqlConnection())
+        {
+            using (var multiple = this.QueryMultiple(connection, SpGetAppointmentHistory, new { @BeginDateTime = startDate, @EndDateTime = endDate }))
+            {
+                returnValue = multiple.Reader.Read<AppointmentModel>().ToList();
+                var statuses = multiple.Reader.Read<AppointmentStatusModel>().ToList();
+                var patients = multiple.Reader.Read<PatientModel>().ToList();
+                foreach (var appointment in returnValue)
+                {
+                    var status = statuses.FirstOrDefault(s => s.IdAppointmentStatus == appointment.IdAppointmentStatus);
+                    if (status != null)
+                        appointment.AppointmentStatus = status;
+
+                    var patient = patients.FirstOrDefault(p => p.IdPatient == appointment.IdPatient);
+                    if (patient != null)
+                        appointment.Patient = patient;
+                }
+            }
+        }
+
+        return returnValue.ToList();
+    }
     #endregion
 
     #region Nutritional Plan
@@ -473,6 +500,18 @@ public class DataAccess
                 var planOptions = multiple.Reader.Read<PlanOptionModel>().ToList();
                 var planDishes = multiple.Reader.Read<PlanDishModel>().ToList();
                 var dishes = GetDishes();
+
+                foreach (var dish in dishes)
+                {
+                    var dishFoods = GetDishFoods(dish.IdDish);
+                    if (dishFoods != null)
+                    {
+                        foreach (var dishFood in dishFoods)
+                        {
+                            dish.DishFoodModel.Add(dishFood);
+                        }
+                    }
+                }
 
                 foreach (var planDish in planDishes)
                 {
