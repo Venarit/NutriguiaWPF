@@ -63,8 +63,8 @@ public partial class PlansViewModel(INavigationService navigationService) : Obse
     {
         if (PlanPatient != null && SelectedPatient != null)
         {
-            if (PlanPatient.PlanModel.PlanOptionModel1 == null || PlanPatient.PlanModel.PlanOptionModel2 == null
-                || PlanPatient.PlanModel.PlanOptionModel3 == null)
+            if (PlanPatient.PlanModel.PlanOptionModel1.Active == null || PlanPatient.PlanModel.PlanOptionModel2.Active == null
+                || PlanPatient.PlanModel.PlanOptionModel3.Active == null)
             {
                 NavigationContext.Parameter = SelectedPatient;
                 NavigationContext.Parameter2 = PlanPatient.IdPlan;
