@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UiNutriguia.Models.DishModel">
+    <Position X="8.5" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEBQAQAAAIAIAAAAiAAgIIAAIAAgAAAAAAAoAA=</HashCode>
+      <FileName>Models\DishModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.ActivityModel">
+    <Position X="4.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Models\ActivityModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.AppointmentModel">
+    <Position X="6.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAqAAAAAAAAEAAAAAAAAABAAAAIgAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\AppointmentModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.AppointmentStatusModel">
+    <Position X="6.25" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AppointmentStatusModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.BaseCatalogModel" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAgAAAEAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseCatalogModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.BaseModel" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAIAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.DishFoodModel">
+    <Position X="11.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEBQAAASQABAAAAAiAAAIAAAIEAgAAQggAAoAA=</HashCode>
+      <FileName>Models\DishFoodModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.FoodEguModel">
+    <Position X="13.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\FoodEguModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.FoodModel">
+    <Position X="13.25" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAICABgIAgAGAAIAIsAAQAABAAAIAQAQAgghAAoAY=</HashCode>
+      <FileName>Models\FoodModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.FoodTypeModel">
+    <Position X="15.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FoodTypeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.MacronutrientModel">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAIQA=</HashCode>
+      <FileName>Models\MacronutrientModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.NutritionalProfileModel">
+    <Position X="15.5" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAFAAABABAAAAAIAAAAAAAgAAAEAAAAEAAEQA=</HashCode>
+      <FileName>Models\NutritionalProfileModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.PatientMeasurementModel">
+    <Position X="17.75" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAIAAAAAAACAAAAAAEAAAAIAAAAQ=</HashCode>
+      <FileName>Models\PatientMeasurementModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.PatientModel">
+    <Position X="15.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>oAAAAAgAACAAAIAAAAAAAAQAAAAAgAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\PatientModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.PlanDishModel">
+    <Position X="4.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAIIAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Models\PlanDishModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.PlanModel">
+    <Position X="6.25" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>wAIAgAAAAABgACAAAAAAAAUAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PlanModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.PlanOptionModel">
+    <Position X="1.25" Y="1.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAERQCEAAAAMsAAEYiABhgAAAKAwoAAAAAAAIIE=</HashCode>
+      <FileName>Models\PlanOptionModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UiNutriguia.Models.PlanPatientModel">
+    <Position X="8.5" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAACCAAAAAAEAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\PlanPatientModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
