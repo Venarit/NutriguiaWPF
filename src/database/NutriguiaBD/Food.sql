@@ -1,1 +1,4 @@
 ﻿CREATE SCHEMA [Food]
+    AUTHORIZATION [dbo];
+
+

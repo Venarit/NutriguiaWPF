@@ -1,6 +1,5 @@
 ﻿CREATE PROCEDURE [Food].[SetDish]
 	@IdDish INT
-	,@IdDishType INT = NULL
 	,@Code NVARCHAR(100) = NULL
 	,@Name NVARCHAR(100) = NULL
 	,@Description NVARCHAR(150) = NULL
@@ -11,16 +10,15 @@
 	,@DishFoods [Food].[TVP_DishFood] READONLY
 AS
 BEGIN
-	SET NOCOUNT ON;
-    BEGIN TRANSACTION;
-
 	BEGIN TRY
+		BEGIN TRANSACTION;
+
 		IF (@IdDish IS NULL OR @IdDish = 0)
 		BEGIN
-			INSERT INTO [Food].[Dish](idDishType, Code, [Name], [Description], Kcal, Protein, Lipids, Hco, Active)
-			VALUES (@IdDishType, @Code, @Name, @Description, @Kcal, @Protein, @Lipids, @Hco, 1)
+			INSERT INTO [Food].[Dish](Code, [Name], [Description], Kcal, Protein, Lipids, Hco, Active)
+			VALUES (@Code, @Name, @Description, @Kcal, @Protein, @Lipids, @Hco, 1)
 
-			DECLARE @NewDishId INT = SCOPE_IDENTITY();
+			 DECLARE @NewDishId INT = SCOPE_IDENTITY();
 
 			INSERT INTO [Food].[DishFood](idDish, idFood, Equivalent, Quantity, Kcal, Protein, Lipids, Hco, Active)
 			SELECT @NewDishId, FoodId, Equivalent, Quantity, Kcal, Protein, Lipids, Hco, 1
@@ -30,8 +28,7 @@ BEGIN
 		BEGIN
 			UPDATE [Food].[Dish]
 			SET
-				idDishType = @IdDishType
-				,Code = @Code
+				Code = @Code
 				,[Name] = @Name
 				,[Description] = @Description
 				,Kcal = @Kcal
@@ -49,6 +46,8 @@ BEGIN
             SELECT @IdDish, FoodId, Equivalent, Quantity, Kcal, Protein, Lipids, Hco, 1
             FROM @DishFoods;
 		END
+
+		COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH
 		ROLLBACK TRANSACTION;

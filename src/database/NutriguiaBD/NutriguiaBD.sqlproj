@@ -118,5 +118,14 @@
     <Build Include="NutritionalPlan\Tables\PlanDish.sql" />
     <Build Include="NutritionalPlan\Tables\Plan.sql" />
     <Build Include="NutritionalPlan\Tables\PlanPatient.sql" />
+    <Build Include="Patient\Stored Procedures\SetPatientDislikedFood.sql" />
+    <Build Include="NutritionalPlan\Stored Procedures\SetPlan.sql" />
+    <Build Include="NutritionalPlan\Stored Procedures\GetPlanPatient.sql" />
+    <Build Include="Food\Stored Procedures\GetDishTypes.sql" />
+    <Build Include="Food\Stored Procedures\GetDishFoods.sql" />
+    <Build Include="Food\Stored Procedures\GetDishes.sql" />
+    <Build Include="Food\Stored Procedures\DeleteDish.sql" />
+    <Build Include="dbo\Stored Procedures\GetAppointmentHistory.sql" />
+    <Build Include="Catalog\Stored Procedures\GetObjectives.sql" />
   </ItemGroup>
 </Project>

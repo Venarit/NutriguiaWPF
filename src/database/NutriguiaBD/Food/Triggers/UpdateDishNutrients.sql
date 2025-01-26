@@ -1,4 +1,4 @@
-﻿CREATE TRIGGER trg_UpdateDishNutrients
+﻿CREATE TRIGGER [Food].trg_UpdateDishNutrients
 ON [Food].[DishFood]
 AFTER INSERT, UPDATE, DELETE
 AS

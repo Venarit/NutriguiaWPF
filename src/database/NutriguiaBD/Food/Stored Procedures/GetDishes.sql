@@ -1,0 +1,5 @@
+﻿CREATE PROCEDURE [Food].[GetDishes]
+AS
+BEGIN
+	SELECT * FROM [Food].Dish WHERE Active = 1
+END

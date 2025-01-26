@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE [Patient].[GetPatients]
+﻿--EXEC [Patient].[GetPatients]
+CREATE PROCEDURE [Patient].[GetPatients]
 AS
 BEGIN
 	SELECT * FROM [Patient].[Patient] WHERE Active = 1

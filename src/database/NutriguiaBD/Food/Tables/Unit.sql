@@ -1,24 +1,33 @@
-﻿CREATE TABLE [Food].[Unit](
-	[idUnit] [int] IDENTITY(1,1) NOT NULL,
-	[Code] [nvarchar](100) NOT NULL,
-	[Name] [nvarchar](100) NULL,
-	[Description] [nvarchar](100) NULL,
-	[Symbol] [nvarchar](10) NULL,
-	[Active] [bit] NULL,
-	[UpdDateTime] [datetimeoffset](7) NULL,
-	[InsDateTime] [datetimeoffset](7) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[idUnit] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+﻿CREATE TABLE [Food].[Unit] (
+    [idUnit]      INT                IDENTITY (1, 1) NOT NULL,
+    [Code]        NVARCHAR (100)     NOT NULL,
+    [Name]        NVARCHAR (100)     NULL,
+    [Description] NVARCHAR (100)     NULL,
+    [Symbol]      NVARCHAR (10)      NULL,
+    [Active]      BIT                DEFAULT ((1)) NULL,
+    [UpdDateTime] DATETIMEOFFSET (7) DEFAULT (getdate()) NULL,
+    [InsDateTime] DATETIMEOFFSET (7) DEFAULT (getdate()) NULL,
+    PRIMARY KEY CLUSTERED ([idUnit] ASC)
+);
+
+
 GO
 
-ALTER TABLE [Food].[Unit] ADD  DEFAULT ((1)) FOR [Active]
+
 GO
 
-ALTER TABLE [Food].[Unit] ADD  DEFAULT (getdate()) FOR [UpdDateTime]
+
 GO
 
-ALTER TABLE [Food].[Unit] ADD  DEFAULT (getdate()) FOR [InsDateTime]
+
 GO
+
+CREATE TRIGGER [Food].Unidad_UpdateDateTime
+ON [Food].[Unit]
+AFTER UPDATE 
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE [Alimento].[Unidad]
+	SET [UpdDateTime] = CURRENT_TIMESTAMP
+END;

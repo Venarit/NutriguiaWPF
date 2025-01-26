@@ -1,23 +1,32 @@
-﻿CREATE TABLE [Food].[FoodType](
-	[idFoodType] [int] IDENTITY(1,1) NOT NULL,
-	[Code] [nvarchar](100) NOT NULL,
-	[Name] [nvarchar](100) NOT NULL,
-	[Description] [nvarchar](100) NOT NULL,
-	[Active] [bit] NULL,
-	[UpdDateTime] [datetimeoffset](7) NULL,
-	[InsDateTime] [datetimeoffset](7) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[idFoodType] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+﻿CREATE TABLE [Food].[FoodType] (
+    [idFoodType]  INT                IDENTITY (1, 1) NOT NULL,
+    [Code]        NVARCHAR (100)     NOT NULL,
+    [Name]        NVARCHAR (100)     NOT NULL,
+    [Description] NVARCHAR (100)     NOT NULL,
+    [Active]      BIT                DEFAULT ((1)) NULL,
+    [UpdDateTime] DATETIMEOFFSET (7) DEFAULT (getdate()) NULL,
+    [InsDateTime] DATETIMEOFFSET (7) DEFAULT (getdate()) NULL,
+    PRIMARY KEY CLUSTERED ([idFoodType] ASC)
+);
+
+
 GO
 
-ALTER TABLE [Food].[FoodType] ADD  DEFAULT ((1)) FOR [Active]
+
 GO
 
-ALTER TABLE [Food].[FoodType] ADD  DEFAULT (getdate()) FOR [UpdDateTime]
+
 GO
 
-ALTER TABLE [Food].[FoodType] ADD  DEFAULT (getdate()) FOR [InsDateTime]
+
 GO
+
+CREATE TRIGGER [Food].[Update_DateTime]
+ON [Food].[FoodType]
+AFTER UPDATE 
+AS
+BEGIN
+	SET NOCOUNT ON;
+	UPDATE [TipoAlimento]
+	SET [UpdDateTime] = CURRENT_TIMESTAMP
+END;
