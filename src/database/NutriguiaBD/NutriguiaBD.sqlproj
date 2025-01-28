@@ -128,4 +128,7 @@
     <Build Include="dbo\Stored Procedures\GetAppointmentHistory.sql" />
     <Build Include="Catalog\Stored Procedures\GetObjectives.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment.sql" />
+  </ItemGroup>
 </Project>
